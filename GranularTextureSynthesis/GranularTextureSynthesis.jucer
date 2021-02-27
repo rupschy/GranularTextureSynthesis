@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="dkkiTU" name="GranularTextureSynthesis" projectType="audioplug"
-              useAppConfig="0" addUsingNamespaceToJuceHeader="0" displaySplashScreen="1"
+              useAppConfig="0" addUsingNamespaceToJuceHeader="1" displaySplashScreen="1"
               jucerFormatVersion="1">
   <MAINGROUP id="gUYrsL" name="GranularTextureSynthesis">
     <GROUP id="{8D45FDA0-2192-F6F9-E822-6EFBCD251379}" name="Source">
@@ -14,6 +14,9 @@
       <FILE id="xQ77Gw" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="xzKEsl" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+    <GROUP id="{2CC91E0E-DD5A-CABE-CE9A-E88C1E0E8ACA}" name="Resources">
+      <FILE id="ieKR4j" name="test_bg.jpg" compile="0" resource="1" file="Resources/test_bg.jpg"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
