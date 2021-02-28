@@ -9,3 +9,19 @@
 */
 
 #pragma once
+
+class Granulate {
+    
+public:
+
+    //Constructor
+    Granulate();
+    
+    float processSample(float x);
+    
+    void setGrainSize(float newGrainSize);
+
+private:
+
+    float grainSize = 128.f;
+};

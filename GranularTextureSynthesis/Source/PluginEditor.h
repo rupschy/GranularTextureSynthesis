@@ -14,26 +14,47 @@
 //==============================================================================
 /**
 */
-class GranularTextureSynthesisAudioProcessorEditor  : public juce::AudioProcessorEditor
+class GranularTextureSynthesisAudioProcessorEditor  : public juce::AudioProcessorEditor,
+                                                      public juce::Slider::Listener
+//                                                      public juce::ComboBox::Listener
 {
 public:
     GranularTextureSynthesisAudioProcessorEditor (GranularTextureSynthesisAudioProcessor&);
     ~GranularTextureSynthesisAudioProcessorEditor() override;
 
     //==============================================================================
-    void paint (juce::Graphics&) override;
 
+    // Drop-down for algorithm typing
+    // void comboBoxChanged(juce::ComboBox * comboBox) override;
+    
+    void paint (juce::Graphics&) override;
     void resized() override;
+    
+    // Slider for grain size
+    void sliderValueChanged(Slider * slider) override;
+    
 
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
+    GranularTextureSynthesisAudioProcessor& audioProcessor;
     
     ImageComponent mImageComponent;
     
     
     
-    GranularTextureSynthesisAudioProcessor& audioProcessor;
+    // Grain size slider
+    Slider grainSizeSlider;
+    
+    // Drop-down for algorithm type
+    //juce::ComboBox algSelector;
+    
+    
+
+    
+
+    
+    
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularTextureSynthesisAudioProcessorEditor)
 };

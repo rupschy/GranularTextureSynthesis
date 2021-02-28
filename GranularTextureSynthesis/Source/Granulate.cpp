@@ -9,3 +9,17 @@
 */
 
 #include "Granulate.h"
+
+// Constructor
+//Granulate::Granulate(){}
+float Granulate::processSample(float x){
+    
+    float y = x;
+    
+    return y;
+    
+}
+
+void Granulate::setGrainSize(float newGrainSize){
+    grainSize = newGrainSize;
+}

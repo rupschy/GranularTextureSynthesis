@@ -16,20 +16,26 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (700, 350);
-    
-    
-    
-    
-    auto bgImage = ImageCache::getFromMemory(BinaryData::test_bg_jpg, BinaryData::test_bg_jpgSize);
+
+    auto bgImage = ImageCache::getFromMemory(BinaryData::bg_jpg, BinaryData::bg_jpgSize);
     
     if (! bgImage.isNull())
         mImageComponent.setImage(bgImage,RectanglePlacement::stretchToFit);
     else
         jassert (! bgImage.isNull());
     
-    
-    
     addAndMakeVisible(mImageComponent);
+    
+    grainSizeSlider.addListener(this);
+    grainSizeSlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    grainSizeSlider.setBounds(350,125,100,100);
+    grainSizeSlider.setRange(128.f,1024.f,0.1f);
+    grainSizeSlider.setValue(audioProcessor.grainSize);
+    grainSizeSlider.setTextBoxStyle(Slider::TextBoxAbove, false, 75,25);
+    addAndMakeVisible(grainSizeSlider);
+    
+    
+    
 }
 
 GranularTextureSynthesisAudioProcessorEditor::~GranularTextureSynthesisAudioProcessorEditor()
@@ -56,5 +62,12 @@ void GranularTextureSynthesisAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
     
-    mImageComponent.setBoundsRelative(0.f, 0.f, 0.25f, 0.25f);
+    mImageComponent.setBounds(1, 1, 700, 350);
+}
+
+void GranularTextureSynthesisAudioProcessorEditor::sliderValueChanged(Slider * slider){
+    
+    if (slider == &grainSizeSlider){
+        audioProcessor.grainSize = grainSizeSlider.getValue();
+    }
 }

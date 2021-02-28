@@ -9,11 +9,12 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Granulate.h"
 
 //==============================================================================
 /**
 */
-class GranularTextureSynthesisAudioProcessor  : public juce::AudioProcessor
+class GranularTextureSynthesisAudioProcessor  : public AudioProcessor
 {
 public:
     //==============================================================================
@@ -31,7 +32,7 @@ public:
     void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
 
     //==============================================================================
-    juce::AudioProcessorEditor* createEditor() override;
+    AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override;
 
     //==============================================================================
@@ -52,8 +53,11 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
-
+    
+     float grainSize = 128.f;
+    
 private:
+//    Granulate granulate;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularTextureSynthesisAudioProcessor)
 };
