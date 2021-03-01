@@ -11,7 +11,7 @@
 #include "Granulate.h"
 
 // Constructor
-//Granulate::Granulate(){}
+Granulate::Granulate(){}
 float Granulate::processSample(float x){
     
     float y = x;
@@ -22,4 +22,8 @@ float Granulate::processSample(float x){
 
 void Granulate::setGrainSize(float newGrainSize){
     grainSize = newGrainSize;
+}
+
+void Granulate::setAlgorithm(float newAlgorithm){
+    algorithm = newAlgorithm;
 }

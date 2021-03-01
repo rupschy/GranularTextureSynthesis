@@ -54,10 +54,14 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
-     float grainSize = 128.f;
+    float grainSize = 128.f;
+    
+    float algorithm = 1.f;
+    
+//    bool continuousProc = false;
     
 private:
-//    Granulate granulate;
+    Granulate granulate;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularTextureSynthesisAudioProcessor)
 };

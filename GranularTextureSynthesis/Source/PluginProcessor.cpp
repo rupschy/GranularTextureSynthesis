@@ -139,9 +139,10 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
+//    continuousProc = false;
         //granulate.setGrainSize(grainSize);
     
-    
+    granulate.setAlgorithm(algorithm);
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
