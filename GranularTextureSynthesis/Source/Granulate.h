@@ -9,19 +9,25 @@
 */
 
 #pragma once
+#include "AudioEffect.h"
 
-class Granulate {
-    
+
+class Granulate : public AudioEffect
+{
 public:
 
     //Constructor
     Granulate();
     
-    float processSample(float x);
+    void processSignal(float * signal, const int numSamples, const int c);
+    
+    float processSample(float x,int c) ;
     
     void setGrainSize(float newGrainSize);
     
     void setAlgorithm(float newAlgorithm);
+    
+    void prepare(float newFs);
 
 private:
 

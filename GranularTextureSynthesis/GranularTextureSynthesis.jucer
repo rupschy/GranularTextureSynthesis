@@ -5,6 +5,10 @@
               jucerFormatVersion="1">
   <MAINGROUP id="gUYrsL" name="GranularTextureSynthesis">
     <GROUP id="{8D45FDA0-2192-F6F9-E822-6EFBCD251379}" name="Source">
+      <FILE id="iyGVVU" name="SimpleMeter.h" compile="0" resource="0" file="../../JUCE test Plugins/Echo/Source/SimpleMeter.h"/>
+      <FILE id="qocmNw" name="VUAnalysis.h" compile="0" resource="0" file="../../JUCE test Plugins/Echo/Source/VUAnalysis.h"/>
+      <FILE id="FccoFE" name="AudioEffect.cpp" compile="1" resource="0" file="Source/AudioEffect.cpp"/>
+      <FILE id="j8DJTx" name="AudioEffect.h" compile="0" resource="0" file="Source/AudioEffect.h"/>
       <FILE id="BArwWt" name="Granulate.cpp" compile="1" resource="0" file="Source/Granulate.cpp"/>
       <FILE id="mI2zeL" name="Granulate.h" compile="0" resource="0" file="Source/Granulate.h"/>
       <FILE id="Ddrdq2" name="PluginProcessor.cpp" compile="1" resource="0"

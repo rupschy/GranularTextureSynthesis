@@ -7,12 +7,19 @@
 
   ==============================================================================
 */
-
 #include "Granulate.h"
+#include "AudioEffect.h"
 
 // Constructor
 Granulate::Granulate(){}
-float Granulate::processSample(float x){
+void Granulate::processSignal(float * signal, const int numSamples, const int c){
+    for (int n = 0; n < numSamples; n++){
+        float x = *signal;
+        x = processSample(x,c);
+        signal[n] = x;
+    }
+}
+float Granulate::processSample(float x, int c){
     
     float y = x;
     

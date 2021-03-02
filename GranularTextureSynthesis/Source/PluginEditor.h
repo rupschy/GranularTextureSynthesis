@@ -11,12 +11,16 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
+#include "SimpleMeter.h"
+
 //==============================================================================
 /**
 */
 class GranularTextureSynthesisAudioProcessorEditor  : public juce::AudioProcessorEditor,
                                                       public juce::Slider::Listener,
-                                                      public juce::ComboBox::Listener
+                                                      public juce::ComboBox::Listener,
+                                                      public Timer
+
 //                                                      public juce::ToggleButton::Listener
 {
 public:
@@ -44,6 +48,9 @@ public:
     
     //Button for continuous variation
 //    void buttonClicked(Button * button) override;
+    
+    // Pure virtual fucntion is needed
+    virtual void timerCallBack() = 0;
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -52,7 +59,12 @@ private:
     
     ImageComponent mImageComponent;
     
+    // Visual meter
+    SimpleMeter meter;
+    
 
+    
+    
     
     
     // Grain size slider
@@ -60,12 +72,13 @@ private:
     
     // Drop-down for algorithm type
     ComboBox algSelector;
+    // Once inheriting behavior like comboBox, can be used anywhere in class now
     
 //    ToggleButton continuousButton;
 //    ToggleButton notContinuousButton;
     
 
-    
+//    void timerCallBack() override;
     
 
     

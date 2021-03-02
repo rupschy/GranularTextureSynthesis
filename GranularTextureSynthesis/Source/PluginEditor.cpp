@@ -44,7 +44,11 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     algSelector.setBounds(75,125,120,40);
     addAndMakeVisible(algSelector);
     
-
+    meter.setBounds(625,250,100,10);
+    meter.configuration = SimpleMeter::HORIZONTAL;
+    addAndMakeVisible(meter);
+    
+    startTimerHz(30);
     
 //    continuousButton.addListener(this);
 //    continuousButton.setBounds(25,25,100,40);
@@ -106,4 +110,8 @@ void GranularTextureSynthesisAudioProcessorEditor::comboBoxChanged(ComboBox * co
         }
     }
     
+}
+
+void GranularTextureSynthesisAudioProcessorEditor::timerCallBack(){
+    meter.update(audioProcessor.meterValue);
 }
