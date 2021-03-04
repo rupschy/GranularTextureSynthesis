@@ -20,6 +20,7 @@
       <FILE id="xzKEsl" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
     <GROUP id="{2CC91E0E-DD5A-CABE-CE9A-E88C1E0E8ACA}" name="Resources">
+      <FILE id="EvtSrB" name="bg.png" compile="0" resource="1" file="Resources/bg.png"/>
       <FILE id="wc5IzU" name="airstrike3d.ttf" compile="0" resource="1" file="Resources/airstrike3d.ttf"/>
       <FILE id="LGa5eB" name="bg.jpg" compile="0" resource="1" file="Resources/bg.jpg"/>
       <FILE id="N5ryrT" name="test_bg.jpg" compile="0" resource="1" file="Resources/test_bg.jpg"/>

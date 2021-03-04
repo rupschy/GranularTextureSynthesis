@@ -13,18 +13,21 @@
 GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProcessorEditor (GranularTextureSynthesisAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
+    auto backgroundImage = ImageCache::getFromMemory(BinaryData::bg_png, BinaryData::bg_pngSize);
+    
+    if (! backgroundImage.isNull()){
+        backgroundImageComponent.setImage(backgroundImage,RectanglePlacement::centred);
+    }
+    else {
+        jassert (!backgroundImage.isNull());
+    }
+    addAndMakeVisible(backgroundImageComponent);
+    
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (700, 350);
 
-    auto bgImage = ImageCache::getFromMemory(BinaryData::bg_jpg, BinaryData::bg_jpgSize);
     
-    if (! bgImage.isNull())
-        mImageComponent.setImage(bgImage,RectanglePlacement::stretchToFit);
-    else
-        jassert (! bgImage.isNull());
-    
-    //addAndMakeVisible(mImageComponent);
     
     
     
@@ -82,20 +85,20 @@ void GranularTextureSynthesisAudioProcessorEditor::paint (juce::Graphics& g)
 
     
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    //g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
     //g.fillAll (juce::Colours::black);
     //addAndMakeVisible(mImageComponent);
-    g.setColour(juce::Colours::royalblue);
-    juce::Rectangle<int> areaHeader(1,1,700,75);
-    g.fillRect(areaHeader);
-    
-    juce::Rectangle<int> areaRight(350,75,350,275);
-    g.setColour(juce::Colours::darkblue);
-    g.fillRect(areaRight);
-    
-    juce::Rectangle<int> areaLeft(1,75,350,275);
-    g.setColour(juce::Colours::darkorchid);
-    g.fillRect(areaLeft);
+//    g.setColour(juce::Colours::royalblue);
+//    juce::Rectangle<int> areaHeader(1,1,700,75);
+//    g.fillRect(areaHeader);
+//
+//    juce::Rectangle<int> areaRight(350,75,350,275);
+//    g.setColour(juce::Colours::darkblue);
+//    g.fillRect(areaRight);
+//
+//    juce::Rectangle<int> areaLeft(1,75,350,275);
+//    g.setColour(juce::Colours::darkorchid);
+//    g.fillRect(areaLeft);
 
     g.setColour(juce::Colours::cornflowerblue);
     g.setFont (18.0f);
@@ -125,7 +128,7 @@ void GranularTextureSynthesisAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
     
-    mImageComponent.setBounds(1, 1, 700, 350);
+    //mBgImage.setBounds(1, 1, 700, 350);
     //const juce::Rectangle<float> area (5.f,80.f,90.f,20.f);
     
     

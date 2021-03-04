@@ -57,10 +57,9 @@ private:
     // access the processor object that created it.
     GranularTextureSynthesisAudioProcessor& audioProcessor;
     
-    ImageComponent mImageComponent;
+    ImageComponent backgroundImageComponent;
 
-    
-    //Rectangle mRectangle;
+
     
     // Visual meter
     SimpleMeter meter1;

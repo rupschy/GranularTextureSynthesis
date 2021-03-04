@@ -8,6 +8,9 @@
 
 namespace BinaryData
 {
+    extern const char*   bg_png;
+    const int            bg_pngSize = 443232;
+
     extern const char*   airstrike3d_ttf;
     const int            airstrike3d_ttfSize = 62100;
 
@@ -18,7 +21,7 @@ namespace BinaryData
     const int            test_bg_jpgSize = 356106;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 3;
+    const int namedResourceListSize = 4;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];
