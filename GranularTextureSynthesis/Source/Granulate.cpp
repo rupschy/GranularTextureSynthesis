@@ -12,7 +12,7 @@
 
 // Constructor
 Granulate::Granulate(){}
-void Granulate::processSignal(float * signal, const int numSamples, const int c){
+void Granulate::processSignal(float *signal, const int numSamples, const int c){
     for (int n = 0; n < numSamples; n++){
         float x = *signal;
         x = processSample(x,c);
@@ -27,10 +27,18 @@ float Granulate::processSample(float x, int c){
     
 }
 
+void Granulate::prepare(float newFs){
+    Fs = newFs;
+}
+
 void Granulate::setGrainSize(float newGrainSize){
     grainSize = newGrainSize;
 }
 
 void Granulate::setAlgorithm(float newAlgorithm){
     algorithm = newAlgorithm;
+}
+
+void Granulate::setPermutation(float newPermutation){
+    permutation = newPermutation;
 }

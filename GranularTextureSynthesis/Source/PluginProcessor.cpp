@@ -143,6 +143,12 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
      playHead = this->getPlayHead();
      playHead->getCurrentPosition(currentPositionInfo);
     
+    
+    mutateState = false;
+    if (mutateState == true){
+        granulate.setPermutation(permutation);
+    }
+    
 //    continuousProc = false;
         //granulate.setGrainSize(grainSize);
     
@@ -159,7 +165,7 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
             
             buffer.getWritePointer(channel)[n] = x;
         }
-        float * channelData = buffer.getWritePointer(channel);
+        //float * channelData = buffer.getWritePointer(channel);
     }
 }
 
@@ -169,7 +175,7 @@ bool GranularTextureSynthesisAudioProcessor::hasEditor() const
     return true; // (change this to false if you choose to not supply an editor)
 }
 
-AudioProcessorEditor* GranularTextureSynthesisAudioProcessor::createEditor()
+AudioProcessorEditor*GranularTextureSynthesisAudioProcessor::createEditor()
 {
     return new GranularTextureSynthesisAudioProcessorEditor (*this);
 }

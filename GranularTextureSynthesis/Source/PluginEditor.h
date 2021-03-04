@@ -19,6 +19,7 @@
 class GranularTextureSynthesisAudioProcessorEditor  : public juce::AudioProcessorEditor,
                                                       public juce::Slider::Listener,
                                                       public juce::ComboBox::Listener,
+                                                      public juce::Button::Listener,
                                                       public Timer
 
 //                                                      public juce::ToggleButton::Listener
@@ -46,11 +47,10 @@ public:
     // Drop-down for algorithm typing
      void comboBoxChanged(juce::ComboBox * comboBox) override;
     
-    //Button for continuous variation
-//    void buttonClicked(Button * button) override;
+    // Button for randomizing permutations
+    void buttonClicked(Button * button) override;
     
-    // Pure virtual fucntion is needed
-    virtual void timerCallBack() = 0;
+
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -58,12 +58,16 @@ private:
     GranularTextureSynthesisAudioProcessor& audioProcessor;
     
     ImageComponent mImageComponent;
-    
-    // Visual meter
-    SimpleMeter meter;
-    
 
     
+    //Rectangle mRectangle;
+    
+    // Visual meter
+    SimpleMeter meter1;
+    SimpleMeter meter2;
+    
+    
+    void timerCallback() override;
     
     
     
@@ -74,11 +78,11 @@ private:
     ComboBox algSelector;
     // Once inheriting behavior like comboBox, can be used anywhere in class now
     
-//    ToggleButton continuousButton;
-//    ToggleButton notContinuousButton;
+    ToggleButton mutateButton;
+    ToggleButton notMutateButton;
     
 
-//    void timerCallBack() override;
+    
     
 
     

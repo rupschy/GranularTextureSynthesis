@@ -28,6 +28,8 @@ public:
     void setAlgorithm(float newAlgorithm);
     
     void prepare(float newFs);
+    
+    void setPermutation(float newPermutation);
 
 private:
 
@@ -35,5 +37,6 @@ private:
     
     float algorithm = 1.f; // 1 = Asynchronous 2 = Synchronous 3 = Smart
     
+    float permutation = {0.f};
     
 };

@@ -62,7 +62,9 @@ public:
     //For Simple Meter
     std::atomic<float> meterValue;
     
-//    bool continuousProc = false;
+    bool mutateState = false;
+    
+    float permutation = {0.f};
     
 private:
     Granulate granulate;
@@ -71,6 +73,8 @@ private:
     
     juce::AudioPlayHead * playHead;
     juce::AudioPlayHead::CurrentPositionInfo currentPositionInfo;
+    
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularTextureSynthesisAudioProcessor)
 };
