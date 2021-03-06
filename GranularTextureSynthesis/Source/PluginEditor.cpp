@@ -61,6 +61,10 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     outputMeterLabel.setJustificationType(Justification::centredBottom);
     addAndMakeVisible(outputMeterLabel);
     
+    smoothingFilterLabel.setText("Smoothing filter envelope?",dontSendNotification);
+    smoothingFilterLabel.setBounds(520,35,150,25);
+    addAndMakeVisible(smoothingFilterLabel);
+    
     
     grainSizeSlider.addListener(this);
     grainSizeSlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
@@ -79,7 +83,7 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     gainSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
     gainSlider.setValue(audioProcessor.gain);
     gainSlider.setRange(0.01f, 1.5f, 0.01f);
-    gainSlider.setBounds(390,150,50,150);
+    gainSlider.setBounds(625,185,50,150);
     gainSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 45,45);
     addAndMakeVisible(gainSlider);
     
@@ -88,21 +92,35 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     algSelector.addItem("Synchronous",2);
     algSelector.addItem("sMaRt",3);
     algSelector.setSelectedId(1);
-    algSelector.setBounds(500,60,120,40);
+    algSelector.setBounds(340,60,120,40);
     addAndMakeVisible(algSelector);
     
-    inputMeter.setBounds(330,150,10,100);
+    inputMeter.setBounds(545,185,10,100);
     inputMeter.configuration = SimpleMeter::VERTICAL;
     addAndMakeVisible(inputMeter);
     
-    outputMeter.setBounds(370,150,10,100);
+    outputMeter.setBounds(590,185,10,100);
     outputMeter.configuration = SimpleMeter::VERTICAL;
     addAndMakeVisible(outputMeter);
     
+    smoothButton.addListener(this);
+    smoothButton.setBounds(565,75,50,50);
+    smoothButton.setButtonText("Yes");
+    smoothButton.setToggleState(audioProcessor.smoothState, dontSendNotification);
+    smoothButton.setRadioGroupId(1);
+    //smoothButton.setEnabled(audioProcessor.smoothState);
+    addAndMakeVisible(smoothButton);
     
-    //smoothFilter.setEnabled(audioProcessor.smoothState);
-    //skipSmoothingFilter.setEnabled(!audioProcessor.smoothState);
     
+    notSmoothButton.addListener(this);
+    notSmoothButton.setBounds(625,75,50,50);
+    notSmoothButton.setButtonText("No");
+    notSmoothButton.setToggleState(audioProcessor.smoothState, dontSendNotification);
+    notSmoothButton.setRadioGroupId(1);
+    //notSmoothButton.setEnabled(!audioProcessor.smoothState);
+    addAndMakeVisible(notSmoothButton);
+    
+
     startTimerHz(30);
     
     
@@ -139,9 +157,9 @@ void GranularTextureSynthesisAudioProcessorEditor::paint (juce::Graphics& g)
     //g.fillAll (juce::Colours::black);
     //addAndMakeVisible(mImageComponent);
 
-    g.setColour(juce::Colours::royalblue);
-    juce::Rectangle<int> areaHeader(1,1,700,75);
-    g.fillRect(areaHeader);
+//    g.setColour(juce::Colours::royalblue);
+//    juce::Rectangle<int> areaHeader(1,1,700,75);
+//    g.fillRect(areaHeader);
     
     
 //    juce::Rectangle<int> areaRight(350,75,350,275);
@@ -182,10 +200,7 @@ void GranularTextureSynthesisAudioProcessorEditor::resized()
     
     backgroundImageComponent.setBounds(1, 1, 700, 350);
     
-        juce::Rectangle<int> areaHeader(1,1,700,75);
-    
-    
-    
+        //juce::Rectangle<int> areaHeader(1,1,700,75);
     //const juce::Rectangle<float> area (5.f,80.f,90.f,20.f);
     
     
@@ -220,8 +235,8 @@ void GranularTextureSynthesisAudioProcessorEditor::comboBoxChanged(ComboBox * co
 }
 
 void GranularTextureSynthesisAudioProcessorEditor::timerCallback(){
-    inputMeter.update(audioProcessor.meterValue);
-    outputMeter.update(audioProcessor.meterValue);
+    inputMeter.update(audioProcessor.meterValueInput);
+    outputMeter.update(audioProcessor.meterValueInput);
     
 }
 
@@ -236,12 +251,12 @@ void GranularTextureSynthesisAudioProcessorEditor::buttonClicked(Button * button
     }
     if (button == &smoothButton){
         audioProcessor.smoothState = true;
-        smoothButton.setEnabled(true);
-        notSmoothButton.setEnabled(false);
+        //smoothButton.setEnabled(true);
+        //notSmoothButton.setEnabled(false);
     }
     if (button == &notSmoothButton){
         audioProcessor.smoothState = false;
-        smoothButton.setEnabled(false);
-        notSmoothButton.setEnabled(true);
+        //smoothButton.setEnabled(false);
+        //notSmoothButton.setEnabled(true);
     }
 }

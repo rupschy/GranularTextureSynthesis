@@ -96,7 +96,8 @@ void GranularTextureSynthesisAudioProcessor::changeProgramName (int index, const
 void GranularTextureSynthesisAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     granulate.prepare(sampleRate);
-    vuAnalysis.setSampleRate(sampleRate);
+    vuAnalysisInput.setSampleRate(sampleRate);
+    vuAnalysisOutput.setSampleRate(sampleRate);
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 }
@@ -160,7 +161,7 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
         for (int n = 0; n < buffer.getNumSamples(); ++n){
             float x = buffer.getReadPointer(channel)[n];
             
-            meterValue = vuAnalysis.processSample(x,channel);
+            meterValueInput = vuAnalysisInput.processSample(x,channel);
             
             x = granulate.processSample(x, channel);
             
@@ -171,6 +172,7 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
             if (smoothState == false){
                 
             }
+            meterValueOutput = vuAnalysisOutput.processSample(x,channel);
         }
         
         //float * channelData = buffer.getWritePointer(channel);

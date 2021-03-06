@@ -59,6 +59,7 @@ private:
     Label outputMeterLabel;
     Label algorithmSelectorLabel;
     Label gainSliderLabel;
+    Label smoothFilterLabel;
     
     // Visual meter
     SimpleMeter inputMeter;

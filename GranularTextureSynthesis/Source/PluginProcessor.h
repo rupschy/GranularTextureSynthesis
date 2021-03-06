@@ -60,7 +60,8 @@ public:
     float algorithm = 1.f;
     
     //For Simple Meter
-    std::atomic<float> meterValue;
+    std::atomic<float> meterValueInput;
+    std::atomic<float> meterValueOutput;
     
     bool mutateState = false;
     
@@ -74,7 +75,8 @@ private:
     
     Granulate granulate;
     
-    VUAnalysis vuAnalysis;
+    VUAnalysis vuAnalysisInput;
+    VUAnalysis vuAnalysisOutput;
     
     juce::AudioPlayHead * playHead;
     juce::AudioPlayHead::CurrentPositionInfo currentPositionInfo;
