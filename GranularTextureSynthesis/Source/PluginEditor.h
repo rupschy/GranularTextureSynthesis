@@ -35,12 +35,6 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
     
-    static const Font& getAirstrikeFont()
-        {
-            static Font Airstrike3D (Font (Typeface::createSystemTypefaceFor (BinaryData::airstrike3d_ttf,
-                                                                        BinaryData::airstrike3d_ttfSize)));
-            return Airstrike3D;
-        }
     // Slider for grain size
     void sliderValueChanged(Slider * slider) override;
     
@@ -59,19 +53,29 @@ private:
     
     ImageComponent backgroundImageComponent;
 
-
+    Label grainSizeLabel;
+    Label smoothingFilterLabel;
+    Label inputMeterLabel;
+    Label outputMeterLabel;
+    Label algorithmSelectorLabel;
+    Label gainSliderLabel;
     
     // Visual meter
-    SimpleMeter meter1;
-    SimpleMeter meter2;
+    SimpleMeter inputMeter;
+    SimpleMeter outputMeter;
     
     
     void timerCallback() override;
     
-    
+    //Toggle Button for smoothing filtering
+    ToggleButton smoothButton;
+    ToggleButton notSmoothButton;
     
     // Grain size slider
     Slider grainSizeSlider;
+    
+    // Gain slider
+    Slider gainSlider;
     
     // Drop-down for algorithm type
     ComboBox algSelector;

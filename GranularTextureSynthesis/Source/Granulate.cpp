@@ -21,7 +21,7 @@ void Granulate::processSignal(float *signal, const int numSamples, const int c){
 }
 float Granulate::processSample(float x, int c){
     
-    float y = x;
+    float y = gain * x;
     
     return y;
     
@@ -41,4 +41,13 @@ void Granulate::setAlgorithm(float newAlgorithm){
 
 void Granulate::setPermutation(float newPermutation){
     permutation = newPermutation;
+}
+
+void Granulate::setGainValue(float newGain){
+    gain = newGain;
+}
+
+float Granulate::smoothFilter(float x, int c){
+    x = x;
+    return x;
 }

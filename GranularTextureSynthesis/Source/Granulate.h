@@ -30,7 +30,11 @@ public:
     void prepare(float newFs);
     
     void setPermutation(float newPermutation);
-
+    
+    void setGainValue(float newGain);
+    
+    float smoothFilter(float x, int c);
+    
 private:
 
     float grainSize = 128.f;
@@ -38,5 +42,7 @@ private:
     float algorithm = 1.f; // 1 = Asynchronous 2 = Synchronous 3 = Smart
     
     float permutation = {0.f};
+    
+    float gain = 1.f;
     
 };

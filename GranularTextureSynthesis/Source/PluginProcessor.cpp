@@ -8,6 +8,8 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "Granulate.h"
+
 
 //==============================================================================
 GranularTextureSynthesisAudioProcessor::GranularTextureSynthesisAudioProcessor()
@@ -144,18 +146,17 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
      playHead->getCurrentPosition(currentPositionInfo);
     
     
-    mutateState = false;
-    if (mutateState == true){
-        granulate.setPermutation(permutation);
-    }
+//    mutateState = false;
+//    if (mutateState == true){
+//        granulate.setPermutation(permutation);
+    
     
 //    continuousProc = false;
         //granulate.setGrainSize(grainSize);
     
-    granulate.setAlgorithm(algorithm);
-
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
+    
+    
+    for (int channel = 0; channel < totalNumInputChannels; ++channel){
         for (int n = 0; n < buffer.getNumSamples(); ++n){
             float x = buffer.getReadPointer(channel)[n];
             
@@ -164,7 +165,14 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
             x = granulate.processSample(x, channel);
             
             buffer.getWritePointer(channel)[n] = x;
+            if (smoothState == true){
+                granulate.smoothFilter(x,channel);
+            }
+            if (smoothState == false){
+                
+            }
         }
+        
         //float * channelData = buffer.getWritePointer(channel);
     }
 }

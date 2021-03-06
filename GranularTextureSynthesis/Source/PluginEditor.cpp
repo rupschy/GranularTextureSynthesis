@@ -13,7 +13,7 @@
 GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProcessorEditor (GranularTextureSynthesisAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    auto backgroundImage = ImageCache::getFromMemory(BinaryData::bg_png, BinaryData::bg_pngSize);
+    auto backgroundImage = ImageCache::getFromMemory(BinaryData::bg_1_png, BinaryData::bg_1_pngSize);
     
     if (! backgroundImage.isNull()){
         backgroundImageComponent.setImage(backgroundImage,RectanglePlacement::centred);
@@ -26,53 +26,103 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (700, 350);
+    
+    // Label classes
+    grainSizeLabel.setText("Grain Size", dontSendNotification);
+    grainSizeLabel.attachToComponent(&grainSizeSlider,false);
+    grainSizeLabel.setJustificationType(Justification::centred);
+    addAndMakeVisible(grainSizeLabel);
+    
+//    smoothingFilterLabel.setText("Smoothing Filter?", dontSendNotification);
+//    smoothingFilterLabel.attachToComponent(&algSelector,false);
+//    smoothingFilterLabel.setJustificationType(Justification::centred);
+//    addAndMakeVisible(smoothingFilterLabel);
+
+    gainSliderLabel.setText("Make-up", dontSendNotification);
+    gainSliderLabel.attachToComponent(&gainSlider,false);
+    gainSliderLabel.setJustificationType(Justification::centred);
+    addAndMakeVisible(gainSliderLabel);
 
     
+    algorithmSelectorLabel.setText("Select Algorithm", dontSendNotification);
+    algorithmSelectorLabel.attachToComponent(&algSelector,false);
+    algorithmSelectorLabel.setJustificationType(Justification::centred);
+    addAndMakeVisible(algorithmSelectorLabel);
     
+    //inputMeterLabel.setFont(6.f);
+    inputMeterLabel.setText("In", dontSendNotification);
+    inputMeterLabel.attachToComponent(&inputMeter,false);
+    inputMeterLabel.setJustificationType(Justification::centredBottom);
+    addAndMakeVisible(inputMeterLabel);
+    
+    //outputMeterLabel.setFont(6.f);
+    outputMeterLabel.setText("Out", dontSendNotification);
+    outputMeterLabel.attachToComponent(&outputMeter,false);
+    outputMeterLabel.setJustificationType(Justification::centredBottom);
+    addAndMakeVisible(outputMeterLabel);
     
     
     grainSizeSlider.addListener(this);
     grainSizeSlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    grainSizeSlider.setBounds(100,125,125,125);
-    grainSizeSlider.setRange(128.f,1024.f,0.1f);
+    grainSizeSlider.setBounds(100,175,125,125);
+//    juce::Range<double> grainRange(800,48000,800);
+    grainSizeSlider.setRange(800, 48000, 800);
+    //grainSizeSlider.setMinAndMaxValues(0,1);
+//    grainSizeSlider.setMinValue(0);
+//    grainSizeSlider.setMaxValue(1);
+    //grainSizeSlider.setRange(128.f,1024.f,0.1f);
     grainSizeSlider.setValue(audioProcessor.grainSize);
     grainSizeSlider.setTextBoxStyle(Slider::TextBoxAbove, false, 75,25);
     addAndMakeVisible(grainSizeSlider);
+    
+    gainSlider.addListener(this);
+    gainSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
+    gainSlider.setValue(audioProcessor.gain);
+    gainSlider.setRange(0.01f, 1.5f, 0.01f);
+    gainSlider.setBounds(390,150,50,150);
+    gainSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 45,45);
+    addAndMakeVisible(gainSlider);
     
     algSelector.addListener(this);
     algSelector.addItem("Asynchronous",1);
     algSelector.addItem("Synchronous",2);
     algSelector.addItem("sMaRt",3);
     algSelector.setSelectedId(1);
-    algSelector.setBounds(460,200,120,40);
+    algSelector.setBounds(500,60,120,40);
     addAndMakeVisible(algSelector);
     
-    meter1.setBounds(325,150,10,100);
-    meter1.configuration = SimpleMeter::VERTICAL;
-    addAndMakeVisible(meter1);
+    inputMeter.setBounds(330,150,10,100);
+    inputMeter.configuration = SimpleMeter::VERTICAL;
+    addAndMakeVisible(inputMeter);
     
-    meter2.setBounds(375,150,10,100);
-    meter2.configuration = SimpleMeter::VERTICAL;
-    addAndMakeVisible(meter2);
+    outputMeter.setBounds(370,150,10,100);
+    outputMeter.configuration = SimpleMeter::VERTICAL;
+    addAndMakeVisible(outputMeter);
+    
+    
+    //smoothFilter.setEnabled(audioProcessor.smoothState);
+    //skipSmoothingFilter.setEnabled(!audioProcessor.smoothState);
     
     startTimerHz(30);
     
-    mutateButton.addListener(this);
-    mutateButton.setBounds(460,125,100,40);
-    mutateButton.setButtonText("Mutate");
-    mutateButton.setToggleState(audioProcessor.mutateState, dontSendNotification);
-    mutateButton.setRadioGroupId(1);
-    addAndMakeVisible(mutateButton);
     
-    notMutateButton.addListener(this);
-    notMutateButton.setBounds(460,125,100,40);
-    notMutateButton.setButtonText("Mutate off");
-    notMutateButton.setToggleState(audioProcessor.mutateState, dontSendNotification);
-    notMutateButton.setRadioGroupId(1);
-    addAndMakeVisible(notMutateButton);
     
-    mutateButton.setEnabled(audioProcessor.mutateState);
-    notMutateButton.setEnabled(!audioProcessor.mutateState);
+//    mutateButton.addListener(this);
+//    mutateButton.setBounds(460,125,100,40);
+//    mutateButton.setButtonText("Mutate");
+//    mutateButton.setToggleState(audioProcessor.mutateState, dontSendNotification);
+//    mutateButton.setRadioGroupId(1);
+//    addAndMakeVisible(mutateButton);
+    
+//    notMutateButton.addListener(this);
+//    notMutateButton.setBounds(460,125,100,40);
+//    notMutateButton.setButtonText("Mutate off");
+//    notMutateButton.setToggleState(audioProcessor.mutateState, dontSendNotification);
+//    notMutateButton.setRadioGroupId(1);
+//    addAndMakeVisible(notMutateButton);
+    
+//    mutateButton.setEnabled(audioProcessor.mutateState);
+//    notMutateButton.setEnabled(!audioProcessor.mutateState);
 }
 
 GranularTextureSynthesisAudioProcessorEditor::~GranularTextureSynthesisAudioProcessorEditor()
@@ -88,10 +138,12 @@ void GranularTextureSynthesisAudioProcessorEditor::paint (juce::Graphics& g)
     //g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
     //g.fillAll (juce::Colours::black);
     //addAndMakeVisible(mImageComponent);
-//    g.setColour(juce::Colours::royalblue);
-//    juce::Rectangle<int> areaHeader(1,1,700,75);
-//    g.fillRect(areaHeader);
-//
+
+    g.setColour(juce::Colours::royalblue);
+    juce::Rectangle<int> areaHeader(1,1,700,75);
+    g.fillRect(areaHeader);
+    
+    
 //    juce::Rectangle<int> areaRight(350,75,350,275);
 //    g.setColour(juce::Colours::darkblue);
 //    g.fillRect(areaRight);
@@ -100,18 +152,18 @@ void GranularTextureSynthesisAudioProcessorEditor::paint (juce::Graphics& g)
 //    g.setColour(juce::Colours::darkorchid);
 //    g.fillRect(areaLeft);
 
-    g.setColour(juce::Colours::cornflowerblue);
-    g.setFont (18.0f);
+//    g.setColour(juce::Colours::cornflowerblue);
+//    g.setFont (18.0f);
     //g.drawFittedText ("| Granular |", getLocalBounds(), juce::Justification::centredLeft, 1);
-    g.drawText("| Granular |", 100, 75, 125, 25,Justification::centred, 1);
+//    g.drawText("| Granular |", 100, 75, 125, 25,Justification::centred, 1);
     
-    g.setColour(juce::Colours::darkorchid);
+//    g.setColour(juce::Colours::darkorchid);
     //g.drawFittedText ("| Texturize |", getLocalBounds(), juce::Justification::centredRight, 1);
-    g.drawText("| Texturize |", 460, 75, 125, 25,Justification::centred, 1);
+//    g.drawText("| Texturize |", 460, 75, 125, 25,Justification::centred, 1);
     
-    g.setColour(juce::Colours::cornflowerblue);
-    g.setFont(64.f);
-    g.drawFittedText("Texture Synthesizer", getLocalBounds(), juce::Justification::centredTop, 1);
+//    g.setColour(juce::Colours::cornflowerblue);
+//    g.setFont(64.f);
+//    g.drawFittedText("Texture Synthesizer", getLocalBounds(), juce::Justification::centredTop, 1);
 //    const juce::Rectangle<float> area (5.f,80.f,90.f,20.f);
     
     // 3 Using Point and Path classes
@@ -128,7 +180,12 @@ void GranularTextureSynthesisAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
     
-    //mBgImage.setBounds(1, 1, 700, 350);
+    backgroundImageComponent.setBounds(1, 1, 700, 350);
+    
+        juce::Rectangle<int> areaHeader(1,1,700,75);
+    
+    
+    
     //const juce::Rectangle<float> area (5.f,80.f,90.f,20.f);
     
     
@@ -138,6 +195,9 @@ void GranularTextureSynthesisAudioProcessorEditor::sliderValueChanged(Slider * s
     
     if (slider == &grainSizeSlider){
         audioProcessor.grainSize = grainSizeSlider.getValue();
+    }
+    if (slider == &gainSlider){
+        audioProcessor.gain = gainSlider.getValue();
     }
 }
 
@@ -160,8 +220,8 @@ void GranularTextureSynthesisAudioProcessorEditor::comboBoxChanged(ComboBox * co
 }
 
 void GranularTextureSynthesisAudioProcessorEditor::timerCallback(){
-    meter1.update(audioProcessor.meterValue);
-    meter2.update(audioProcessor.meterValue);
+    inputMeter.update(audioProcessor.meterValue);
+    outputMeter.update(audioProcessor.meterValue);
     
 }
 
@@ -173,5 +233,15 @@ void GranularTextureSynthesisAudioProcessorEditor::buttonClicked(Button * button
     }
     if (button == &notMutateButton){
         audioProcessor.mutateState = true;
+    }
+    if (button == &smoothButton){
+        audioProcessor.smoothState = true;
+        smoothButton.setEnabled(true);
+        notSmoothButton.setEnabled(false);
+    }
+    if (button == &notSmoothButton){
+        audioProcessor.smoothState = false;
+        smoothButton.setEnabled(false);
+        notSmoothButton.setEnabled(true);
     }
 }

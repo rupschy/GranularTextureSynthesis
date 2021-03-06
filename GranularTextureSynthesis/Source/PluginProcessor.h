@@ -66,7 +66,12 @@ public:
     
     float permutation = {0.f};
     
+    float gain = 1.f;
+    
+    bool smoothState = false;
+    
 private:
+    
     Granulate granulate;
     
     VUAnalysis vuAnalysis;
@@ -74,7 +79,8 @@ private:
     juce::AudioPlayHead * playHead;
     juce::AudioPlayHead::CurrentPositionInfo currentPositionInfo;
     
-
+    
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GranularTextureSynthesisAudioProcessor)
 };
