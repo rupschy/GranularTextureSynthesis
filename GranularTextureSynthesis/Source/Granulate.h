@@ -23,7 +23,7 @@ public:
     
     float processSample(float x,int c) ;
     
-    void setGrainSize(float newGrainSize);
+    void setGrainSize(int newGrainSize);
     
     void setAlgorithm(float newAlgorithm);
     
@@ -35,9 +35,11 @@ public:
     
     float smoothFilter(float x, int c);
     
+    void setVarianceValue(int newVariance);
+    
 private:
 
-    float grainSize = 128.f;
+    int grainSize = 800;
     
     float algorithm = 1.f; // 1 = Asynchronous 2 = Synchronous 3 = Smart
     
@@ -45,4 +47,5 @@ private:
     
     float gain = 1.f;
     
+    int variance = 0;
 };

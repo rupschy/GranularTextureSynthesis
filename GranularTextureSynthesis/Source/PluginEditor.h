@@ -39,7 +39,7 @@ public:
     void sliderValueChanged(Slider * slider) override;
     
     // Drop-down for algorithm typing
-     void comboBoxChanged(juce::ComboBox * comboBox) override;
+    void comboBoxChanged(juce::ComboBox * comboBox) override;
     
     // Button for randomizing permutations
     void buttonClicked(Button * button) override;
@@ -60,6 +60,7 @@ private:
     Label algorithmSelectorLabel;
     Label gainSliderLabel;
     Label smoothFilterLabel;
+    Label varianceSliderLabel;
     
     // Visual meter
     SimpleMeter inputMeter;
@@ -85,7 +86,8 @@ private:
     ToggleButton mutateButton;
     ToggleButton notMutateButton;
     
-
+    // Variance Slider
+    Slider varianceSlider;
     
     
 

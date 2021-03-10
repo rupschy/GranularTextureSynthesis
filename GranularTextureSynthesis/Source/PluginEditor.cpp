@@ -65,6 +65,11 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     smoothingFilterLabel.setBounds(520,35,150,25);
     addAndMakeVisible(smoothingFilterLabel);
     
+    varianceSliderLabel.setText("Variance", dontSendNotification);
+    varianceSliderLabel.attachToComponent(&varianceSlider,false);
+    varianceSliderLabel.setJustificationType(Justification::centred);
+    addAndMakeVisible(varianceSliderLabel);
+    
     
     grainSizeSlider.addListener(this);
     grainSizeSlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
@@ -76,7 +81,8 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
 //    grainSizeSlider.setMaxValue(1);
     //grainSizeSlider.setRange(128.f,1024.f,0.1f);
     grainSizeSlider.setValue(audioProcessor.grainSize);
-    grainSizeSlider.setTextBoxStyle(Slider::TextBoxAbove, false, 75,25);
+    grainSizeSlider.setNumDecimalPlacesToDisplay(0);
+    grainSizeSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 75,25);
     addAndMakeVisible(grainSizeSlider);
     
     gainSlider.addListener(this);
@@ -141,6 +147,15 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     
 //    mutateButton.setEnabled(audioProcessor.mutateState);
 //    notMutateButton.setEnabled(!audioProcessor.mutateState);
+    
+    varianceSlider.addListener(this);
+    varianceSlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    varianceSlider.setBounds(300,175,125,125);
+    varianceSlider.setRange(0, 100, 1);
+    varianceSlider.setValue(audioProcessor.grainSize);
+    varianceSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 75,25);
+    addAndMakeVisible(varianceSlider);
+    
 }
 
 GranularTextureSynthesisAudioProcessorEditor::~GranularTextureSynthesisAudioProcessorEditor()
@@ -213,6 +228,9 @@ void GranularTextureSynthesisAudioProcessorEditor::sliderValueChanged(Slider * s
     }
     if (slider == &gainSlider){
         audioProcessor.gain = gainSlider.getValue();
+    }
+    if (slider == &varianceSlider){
+        audioProcessor.variance = varianceSlider.getValue();
     }
 }
 

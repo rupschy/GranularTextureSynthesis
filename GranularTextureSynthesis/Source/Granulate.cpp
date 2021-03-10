@@ -31,7 +31,7 @@ void Granulate::prepare(float newFs){
     Fs = newFs;
 }
 
-void Granulate::setGrainSize(float newGrainSize){
+void Granulate::setGrainSize(int newGrainSize){
     grainSize = newGrainSize;
 }
 
@@ -50,4 +50,8 @@ void Granulate::setGainValue(float newGain){
 float Granulate::smoothFilter(float x, int c){
     x = x;
     return x;
+}
+
+void Granulate::setVarianceValue(int newVariance){
+    variance = newVariance;
 }

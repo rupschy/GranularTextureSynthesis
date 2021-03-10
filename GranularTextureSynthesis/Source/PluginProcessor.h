@@ -71,6 +71,8 @@ public:
     
     bool smoothState = false;
     
+    float variance = 0.f;
+    
 private:
     
     Granulate granulate;
