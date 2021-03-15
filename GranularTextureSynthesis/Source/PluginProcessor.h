@@ -55,7 +55,7 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
-    float grainSize = 128.f;
+    int grainSize = 800;
     
     float algorithm = 1.f;
     
@@ -71,7 +71,9 @@ public:
     
     bool smoothState = false;
     
-    float variance = 0.f;
+    bool notSmoothState = true;
+    
+    int variance = 0;
     
 private:
     

@@ -44,6 +44,7 @@ public:
     // Button for randomizing permutations
     void buttonClicked(Button * button) override;
     
+    bool shouldBeOn = true;
 
 
 private:

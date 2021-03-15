@@ -73,7 +73,7 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     
     grainSizeSlider.addListener(this);
     grainSizeSlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    grainSizeSlider.setBounds(100,175,125,125);
+    grainSizeSlider.setBounds(80,175,100,100);
 //    juce::Range<double> grainRange(800,48000,800);
     grainSizeSlider.setRange(800, 48000, 800);
     //grainSizeSlider.setMinAndMaxValues(0,1);
@@ -121,7 +121,9 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     notSmoothButton.addListener(this);
     notSmoothButton.setBounds(625,75,50,50);
     notSmoothButton.setButtonText("No");
-    notSmoothButton.setToggleState(audioProcessor.smoothState, dontSendNotification);
+    notSmoothButton.setToggleState(shouldBeOn, dontSendNotification);
+    // notSmoothButton.setState(juce::Button::buttonOver);
+    notSmoothButton.setToggleState(audioProcessor.notSmoothState, dontSendNotification);
     notSmoothButton.setRadioGroupId(1);
     //notSmoothButton.setEnabled(!audioProcessor.smoothState);
     addAndMakeVisible(notSmoothButton);
@@ -150,7 +152,7 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     
     varianceSlider.addListener(this);
     varianceSlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    varianceSlider.setBounds(300,175,125,125);
+    varianceSlider.setBounds(180,175,100,100);
     varianceSlider.setRange(0, 100, 1);
     varianceSlider.setValue(audioProcessor.grainSize);
     varianceSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 75,25);
