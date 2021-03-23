@@ -9,6 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "Granulate.h"
+#include <JuceHeader.h>
 
 
 //==============================================================================
@@ -145,7 +146,13 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
         buffer.clear (i, 0, buffer.getNumSamples());
      playHead = this->getPlayHead();
      playHead->getCurrentPosition(currentPositionInfo);
+  
     
+//    float * leftChannel = buffer.getWritePointer(0);
+//    float * rightChannel = buffer.getWritePointer(1);
+//    int N = buffer.getNumSamples();
+//    granulate.splitBuffer(leftChannel, rightChannel, N);
+    granulate.splitBuffer(buffer);
     
 //    mutateState = false;
 //    if (mutateState == true){
@@ -160,12 +167,10 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
     for (int channel = 0; channel < totalNumInputChannels; ++channel){
         for (int n = 0; n < buffer.getNumSamples(); ++n){
             float x = buffer.getReadPointer(channel)[n];
-            
             meterValueInput = vuAnalysisInput.processSample(x,channel);
-            
             x = granulate.processSample(x, channel);
-            
             buffer.getWritePointer(channel)[n] = x;
+            
             if (smoothState == true){
                 granulate.smoothFilter(x,channel);
             }
@@ -175,7 +180,8 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
             meterValueOutput = vuAnalysisOutput.processSample(x,channel);
         }
         
-        //float * channelData = buffer.getWritePointer(channel);
+        float * channelData = buffer.getWritePointer(channel);
+        granulate.processSignal(channelData, buffer.getNumSamples(), channel);
     }
 }
 

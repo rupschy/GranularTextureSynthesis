@@ -158,6 +158,7 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     varianceSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 75,25);
     addAndMakeVisible(varianceSlider);
     
+
 }
 
 GranularTextureSynthesisAudioProcessorEditor::~GranularTextureSynthesisAudioProcessorEditor()

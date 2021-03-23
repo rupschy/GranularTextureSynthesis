@@ -75,6 +75,9 @@ public:
     
     int variance = 0;
     
+    
+    
+    
 private:
     
     Granulate granulate;

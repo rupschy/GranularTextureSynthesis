@@ -10,6 +10,7 @@
 
 #pragma once
 #include "AudioEffect.h"
+#include <JuceHeader.h>
 
 
 class Granulate : public AudioEffect
@@ -37,6 +38,12 @@ public:
     
     void setVarianceValue(int newVariance);
     
+    
+    void splitBuffer(float * leftChannel, float * rightChannel, const int N);
+    void splitBuffer(juce::AudioBuffer<float>& buffer);
+    
+    
+
 private:
 
     int grainSize = 800;
@@ -48,4 +55,9 @@ private:
     float gain = 1.f;
     
     int variance = 0;
+    
+    
+    
+
+    
 };
