@@ -9,6 +9,8 @@
 */
 #include "Granulate.h"
 #include "AudioEffect.h"
+#include <iostream>
+using namespace std;
 
 // Constructor
 Granulate::Granulate(){}
@@ -80,7 +82,14 @@ void Granulate::splitBuffer(juce::AudioBuffer<float>& buffer){
     
 };
 
-
+float Granulate::setFramesOut(float Fs, int grainSize, int N){
+    int gHop = floor(grainSize/2);
+    float outLengthS = 2*N;
+    float outLengthN = outLengthS*Fs;
+    float framesOut = floor((outLengthN-grainSize+gHop)/gHop);
+    
+    return framesOut;
+}
 
 
 

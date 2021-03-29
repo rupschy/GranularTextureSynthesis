@@ -42,6 +42,10 @@ public:
     void splitBuffer(float * leftChannel, float * rightChannel, const int N);
     void splitBuffer(juce::AudioBuffer<float>& buffer);
     
+//    int setLenIn(const int newlenIn);
+    
+    float setFramesOut(float Fs, int grainSize, int N);
+    
     
 
 private:
@@ -56,6 +60,9 @@ private:
     
     int variance = 0;
     
+
+    
+//    float grainMatrix{grainSize} = {0.f};
     
     
 

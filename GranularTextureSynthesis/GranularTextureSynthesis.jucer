@@ -15,6 +15,11 @@
       <FILE id="ABIPfP" name="SmallKnob.h" compile="0" resource="0" file="Components/SmallKnob.h"/>
     </GROUP>
     <GROUP id="{8D45FDA0-2192-F6F9-E822-6EFBCD251379}" name="Source">
+      <FILE id="obYr2D" name="Permutation.cpp" compile="1" resource="0" file="Source/Permutation.cpp"/>
+      <FILE id="ROqbDg" name="Permutation.h" compile="0" resource="0" file="Source/Permutation.h"/>
+      <FILE id="FEBXtC" name="GrainCreator.cpp" compile="1" resource="0"
+            file="Source/GrainCreator.cpp"/>
+      <FILE id="k6ev4L" name="GrainCreator.h" compile="0" resource="0" file="Source/GrainCreator.h"/>
       <FILE id="iyGVVU" name="SimpleMeter.h" compile="0" resource="0" file="../../JUCE test Plugins/Echo/Source/SimpleMeter.h"/>
       <FILE id="QyCBQA" name="STFT.h" compile="0" resource="0" file="Source/STFT.h"/>
       <FILE id="qocmNw" name="VUAnalysis.h" compile="0" resource="0" file="../../JUCE test Plugins/Echo/Source/VUAnalysis.h"/>

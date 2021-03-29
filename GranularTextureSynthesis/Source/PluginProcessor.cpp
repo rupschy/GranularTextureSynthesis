@@ -146,6 +146,8 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
         buffer.clear (i, 0, buffer.getNumSamples());
      playHead = this->getPlayHead();
      playHead->getCurrentPosition(currentPositionInfo);
+    
+//    granulate.setLenIn(buffer.getNumSamples());
   
     
 //    float * leftChannel = buffer.getWritePointer(0);
@@ -170,6 +172,7 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
             meterValueInput = vuAnalysisInput.processSample(x,channel);
             x = granulate.processSample(x, channel);
             buffer.getWritePointer(channel)[n] = x;
+
             
             if (smoothState == true){
                 granulate.smoothFilter(x,channel);
@@ -180,6 +183,7 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
             meterValueOutput = vuAnalysisOutput.processSample(x,channel);
         }
         
+
         float * channelData = buffer.getWritePointer(channel);
         granulate.processSignal(channelData, buffer.getNumSamples(), channel);
     }
