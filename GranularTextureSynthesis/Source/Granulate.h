@@ -71,7 +71,6 @@ private:
     int inputArrayCount = 0;
 
     
-//    float grainMatrix{grainSize} = {0.f};
     
     
 
