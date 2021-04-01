@@ -93,7 +93,14 @@ float Granulate::setFramesOut(float Fs, int grainSize, int N){
 
 
 
-
+void Granulate::setInputArray(float x, int channel){
+    inputArray[inputArrayCount][channel] = x;
+    inputArrayCount++;
+    if (inputArrayCount >= arraySize){
+        inputArrayCount = 0;
+        // Any other processing functions with array buffer need to be called here.
+    }
+}
 
 // What steps left?
 // 1. Split audio buffers per channel into grains either by analysis or by grainSize

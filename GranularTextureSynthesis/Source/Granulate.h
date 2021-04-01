@@ -11,6 +11,9 @@
 #pragma once
 #include "AudioEffect.h"
 #include <JuceHeader.h>
+#include "Permutation.h"
+#include "GrainCreator.h"
+
 
 
 class Granulate : public AudioEffect
@@ -46,6 +49,8 @@ public:
     
     float setFramesOut(float Fs, int grainSize, int N);
     
+    // Take in sample, from PProcessor, input into array, fill array, when count to max, then do processing
+    void setInputArray(float x, int channel);
     
 
 private:
@@ -60,6 +65,10 @@ private:
     
     int variance = 0;
     
+    // array for reading in buffers from DAW
+    static const int arraySize = 262144;
+    float inputArray[arraySize][2] = {{0.f}};
+    int inputArrayCount = 0;
 
     
 //    float grainMatrix{grainSize} = {0.f};

@@ -20,7 +20,20 @@ using namespace std;
 
 
 Permutation::Permutation(){}
-int Permutation::setPerm(float framesOut, float numInputFrames){
+void Permutation::setParameters(int & grainSize, int & lenInN){
+     // should find length of input from outside class?
+     // Should find grainSize from outside class?
+    int gHop = floor(grainSize/2);
+    float numInputFrames = (float)floor((lenInN-grainSize+gHop)/gHop);
+    
+    
+    float outLengthS = 2*(lenInN/48000.f); // Should use Fs not 48000
+    float outLengthN = outLengthS*48000.f; // Should use Fs not 48000
+    float framesOut = floor((outLengthN-grainSize+gHop/gHop));
+
+}
+
+int Permutation::setPermutationSet(int permutationSet, float framesOut, float numInputFrames, int grainSize){
     // Initialize parameters for boolean to augment permutation
     int frameDif = abs((int(framesOut)-(int)numInputFrames));
     int newPermutation[(int)framesOut];
@@ -34,17 +47,21 @@ int Permutation::setPerm(float framesOut, float numInputFrames){
 //    Change array from 0 -> outFrames to 0 -> numInputFrames
     for (int j = 0; j < framesOut; j++){
         if (newPermutation[j] > numInputFrames){
-            newPermutation[j] = newPermutation[j] - frameDif;
+            newPermutation[j] = abs(newPermutation[j] - frameDif);
             if (newPermutation[j] == -1){
-                newPermutation[j] = 2;
+                newPermutation[j] = 0;
             }
         }
         else {
             newPermutation[j] = newPermutation[j];
         }
     }
-
+    
+    
+    
+    return newPermutation[(int)framesOut];
+}
 
     
-    return newPermutation[iFramesOut];
-}
+    
+
