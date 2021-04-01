@@ -9,6 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "Granulate.h"
+#include "GrainCreator.h"
 #include <JuceHeader.h>
 
 
@@ -25,6 +26,7 @@ GranularTextureSynthesisAudioProcessor::GranularTextureSynthesisAudioProcessor()
                        )
 #endif
 {
+    
 }
 
 GranularTextureSynthesisAudioProcessor::~GranularTextureSynthesisAudioProcessor()
@@ -170,7 +172,13 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
         for (int n = 0; n < buffer.getNumSamples(); ++n){
             float x = buffer.getReadPointer(channel)[n];
             meterValueInput = vuAnalysisInput.processSample(x,channel);
-            x = granulate.processSample(x, channel);
+            
+            
+            grainCreator.setGrainMatrix(x,channel);
+            
+            
+            
+//            x = granulate.processSample(x, channel);
             buffer.getWritePointer(channel)[n] = x;
 
             

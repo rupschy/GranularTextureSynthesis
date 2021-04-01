@@ -25,14 +25,19 @@ void GrainCreator::createGrains(int & grainSize, int & numInputFrames){
 }
 
 
-void GrainCreator::setGrainMatrix(float x){
+void GrainCreator::setGrainMatrix(float x, int channel){
     int grainHop = grainLength/2;
-    grainMatrix[indexGrainSize][indexGrainNumber] =x;
+    grainMatrix[indexGrainNumber][indexGrainSize][channel] = x;
     indexGrainSize++;
+    
+    // If grainSize index > grainLength, then other operations need to occur...
     if (indexGrainSize >= grainLength){
-        grainMatrix[indexGrainSize-grainHop][indexGrainNumber] = grainMatrix[indexGrainSize-indexGrainSize][indexGrainNumber+1];
+//        grainMatrix[indexGrainSize-grainHop][indexGrainNumber] = grainMatrix[indexGrainSize-indexGrainSize][indexGrainNumber+1];
         
-        indexGrainNumber++;
+        // loop should take completed grain and move completed info to next grain as needed.
+        for (int i=0; i < 1024; i++){
+            grainMatrix[indexGrainNumber+1][i][channel]  =  grainMatrix[indexGrainNumber][i][channel];
+        }
         
         indexGrainSize = 0;
         
@@ -47,10 +52,10 @@ void GrainCreator::setGrainMatrix(float x){
     }
 }
 
-void GrainCreator::setSTFTGrains(float x){
-//    Use STFT here
-    float X = STFT(float x);
-}
+//void GrainCreator::setSTFTGrains(float x){
+////    Use STFT here
+//    float X = STFT(float x);
+//}
 
 
 

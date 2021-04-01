@@ -21,7 +21,7 @@ public:
     // This function should cut original signal into grains, window them, an store in matrix of dimensions [grainSize,numInputFrames]
     void createGrains(int & grainSize, int & numInputFrames); // needs grainSize & needs numInputFrames
     
-    void setGrainMatrix(float x);
+    void setGrainMatrix(float x, int channel);
     
     
     // This function should take each grain and convert into the frequency domain using STFT.h. It should also randomize the frequency bins for each respective grain. Should output multi-dimensional array of [nfft,mfft,numGrains] dimensions
@@ -41,7 +41,7 @@ private:
     static const int arrayLength = 262144;
     static const int grainLength = 1024;
     static const int numGrains = 511;
-    float grainMatrix[numGrains][grainLength] = {0.f};
+    float grainMatrix[numGrains][grainLength][2] = {0.f};
     
     
 };
