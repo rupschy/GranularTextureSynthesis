@@ -174,7 +174,6 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
             meterValueInput = vuAnalysisInput.processSample(x,channel);
             
             
-            grainCreator.setGrainMatrix(x,channel);
             
             
             

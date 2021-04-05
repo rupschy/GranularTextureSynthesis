@@ -93,12 +93,25 @@ float Granulate::setFramesOut(float Fs, int grainSize, int N){
 
 
 
-void Granulate::setInputArray(float x, int channel){
-    inputArray[inputArrayCount][channel] = x;
+//void Granulate::setInputArray(float x, int channel){
+//    inputArray[inputArrayCount][channel] = x;
+//    inputArrayCount++;
+//    if (inputArrayCount >= arraySize){
+//        inputArrayCount = 0;
+//        // Any other processing functions with array buffer need to be called here.
+//    }
+//}
+
+void Granulate::setInputMatrix(float x, int channel){
+    inputMatrix[inputArrayCount][inputArraySizeCount][channel] = x;
     inputArrayCount++;
+    inputArraySizeCount++;
+    
     if (inputArrayCount >= arraySize){
         inputArrayCount = 0;
-        // Any other processing functions with array buffer need to be called here.
+    }
+    if (inputArraySizeCount >= arrayLengthSize){
+        inputArraySizeCount = 0;
     }
 }
 
@@ -111,3 +124,56 @@ void Granulate::setInputArray(float x, int channel){
 // 5. Do frequency shift from .getSize(). Maybe further frequency processing. This could be where the neural network could process??
 // 6. Convert back to time domain istft etc
 // 7. Get order from permutation matrix for re-implementation into output per channel
+
+
+
+// New Functions in order of operation
+//_______________________________________________________________________________
+void Granulate::setPermParameters(int grainSize, int lenInN){
+    int gHop = floor(grainSize/2);
+    float numInputFrames = (float)floor((lenInN-grainSize+gHop)/gHop);
+    
+    
+    float outLengthS = 2*(lenInN/48000.f); // Should use Fs not 48000
+    float outLengthN = outLengthS*48000.f; // Should use Fs not 48000
+    float framesOut = floor((outLengthN-grainSize+gHop/gHop));
+}
+
+int Granulate::setPermutationSet(int permutationSet, float framesOut, float numInputFrames, int grainSize){
+    // Initialize parameters for boolean to augment permutation
+    int frameDif = abs((int(framesOut)-(int)numInputFrames));
+    int newPermutation[(int)framesOut];
+    for (int i = 0; i < framesOut; i++){
+        newPermutation[i] = i;
+    }
+//    Randomization of values within the scale from 0 -> outFrames
+    int sizePerm = sizeof(newPermutation)/sizeof(newPermutation[0]);
+    std::random_shuffle(newPermutation,newPermutation+sizePerm);
+    
+//    Change array from 0 -> outFrames to 0 -> numInputFrames
+    for (int j = 0; j < framesOut; j++){
+        if (newPermutation[j] > numInputFrames){
+            newPermutation[j] = abs(newPermutation[j] - frameDif);
+            if (newPermutation[j] == -1){
+                newPermutation[j] = 0;
+            }
+        }
+        else {
+            newPermutation[j] = newPermutation[j];
+        }
+    }
+    
+    
+    
+    return newPermutation[(int)framesOut];
+}
+
+
+void Granulate::setGrainMatrix(float x, int channel, int** matrix, int rows, int cols, int * src, int src_size){
+    int pos = 0;
+    for (int i = 0; i < rows; ++i){
+        for (int j = 0; j < cols; ++j){
+            matrix[i][j] = src[pos++];
+        }
+    }
+}

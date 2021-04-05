@@ -81,7 +81,7 @@ public:
 private:
     
     Granulate granulate;
-    GrainCreator grainCreator;
+    
     
     VUAnalysis vuAnalysisInput;
     VUAnalysis vuAnalysisOutput;

@@ -51,6 +51,36 @@ public:
     
     // Take in sample, from PProcessor, input into array, fill array, when count to max, then do processing
     void setInputArray(float x, int channel);
+    void setInputMatrix(float x, int channel);
+    
+    
+    
+    // Permutation functions
+    //_______________________________________________________________________________________________________
+    //    sets parameters for use in later functions in/out of class
+    void setPermParameters(int grainSize, int lenInN);
+    
+    int setPermutationSet(int permutationSet, float framesOut, float numInputFrames, int grainSize);
+    
+    
+    
+    
+    // grainCreation functions
+    //_______________________________________________________________________________________________________
+    // This function should cut original signal into grains, window them, an store in matrix of dimensions [grainSize,numInputFrames]
+    void createGrains(int & grainSize, int & numInputFrames); // needs grainSize & needs numInputFrames
+    
+    void setGrainMatrix(float x, int channel, int** matrix, int rows, int cols, int * src, int src_size);
+    
+    // This function should take each grain and convert into the frequency domain using STFT.h. It should also randomize the frequency bins for each respective grain. Should output multi-dimensional array of [nfft,mfft,numGrains] dimensions
+    // This funciton also converts the multi-dimensional arrays back into the time domain and initializes new grain matrix of length [grainSize,numInputFrames]
+    void setSTFTGrains(float x);
+    
+    // This function will take in the multi-dimensional time-domain array from setSTFTGrains and create a matrix of dimensions [grainSize, framesOut]. this will call each new grain and change their order from permutation created in setPermutationSet()
+    void arrangeOutputGrains();
+    
+    // This function takes the array from arrangeOutputGrains() and will order grains for output per channel
+    void outputArray();
     
 
 private:
@@ -66,13 +96,30 @@ private:
     int variance = 0;
     
     // array for reading in buffers from DAW
-    static const int arraySize = 262144;
-    float inputArray[arraySize][2] = {{0.f}};
+//    static const int arraySize = 262144;
+//    float inputArray[arraySize][2] = {{0.f}};
+//    int inputArrayCount = 0;
+    
+    
+    static const int arraySize = 256;
+    static const int arrayLengthSize = 1024;
     int inputArrayCount = 0;
-
+    int inputArraySizeCount = 0;
+    float inputMatrix[arraySize][arrayLengthSize][2] = {0.f};
     
+    // Permutation functions
+    //_______________________________________________________________________________________________________
+    float framesOut;
+    float numInputFrames;
     
+    // grainCreation functions
+    //_______________________________________________________________________________________________________
+    int indexGrainSize = 0; //init max 1024
+    int indexGrainNumber = 0; //init max 256
+    static const int arrayLength = 262144;
+    static const int grainLength = 1024;
+    static const int numGrains = 511;
+    float grainMatrix[numGrains][grainLength][2] = {0.f};
     
-
     
 };
