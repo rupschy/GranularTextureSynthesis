@@ -14,6 +14,8 @@
 #include "Permutation.h"
 #include "GrainCreator.h"
 
+#include "AccelerateFFT.h"
+
 
 
 class Granulate : public AudioEffect
@@ -120,6 +122,11 @@ private:
     static const int grainLength = 1024;
     static const int numGrains = 511;
     float grainMatrix[numGrains][grainLength][2] = {0.f};
+    
+    // Matrix creation for FFT implementation
+    float grainFFTMatrix[numGrains][grainLength][2] = {0.f};
+    int loopCount = 0;
+    
     
     
 };

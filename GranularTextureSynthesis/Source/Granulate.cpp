@@ -10,6 +10,7 @@
 #include "Granulate.h"
 #include "AudioEffect.h"
 #include <iostream>
+#include "AccelerateFFT.h"
 using namespace std;
 
 // Constructor
@@ -102,8 +103,13 @@ float Granulate::setFramesOut(float Fs, int grainSize, int N){
 //    }
 //}
 
+
+// Functional to create grains but cant work for windowing and setting overlap
 void Granulate::setInputMatrix(float x, int channel){
     inputMatrix[inputArrayCount][inputArraySizeCount][channel] = x;
+    
+//    grainFFTMatrix[arraySize][arrayLengthSize][channel] = AccelerateFFT(x);
+    
     inputArrayCount++;
     inputArraySizeCount++;
     
@@ -111,7 +117,13 @@ void Granulate::setInputMatrix(float x, int channel){
         inputArrayCount = 0;
     }
     if (inputArraySizeCount >= arrayLengthSize){
+//        inputMatrix[inputArrayCount][inputArraySizeCount][channel];
         inputArraySizeCount = 0;
+//        Other processing should be done here
+    }
+    loopCount = loopCount + 1;
+    if (int loopCount = arrayLength){
+        
     }
 }
 

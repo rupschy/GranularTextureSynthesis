@@ -15,6 +15,9 @@
       <FILE id="ABIPfP" name="SmallKnob.h" compile="0" resource="0" file="Components/SmallKnob.h"/>
     </GROUP>
     <GROUP id="{8D45FDA0-2192-F6F9-E822-6EFBCD251379}" name="Source">
+      <FILE id="hmW2qi" name="AccelerateFFT.cpp" compile="1" resource="0"
+            file="Source/AccelerateFFT.cpp"/>
+      <FILE id="Ykj0gh" name="AccelerateFFT.h" compile="0" resource="0" file="Source/AccelerateFFT.h"/>
       <FILE id="obYr2D" name="Permutation.cpp" compile="1" resource="0" file="Source/Permutation.cpp"/>
       <FILE id="ROqbDg" name="Permutation.h" compile="0" resource="0" file="Source/Permutation.h"/>
       <FILE id="FEBXtC" name="GrainCreator.cpp" compile="1" resource="0"

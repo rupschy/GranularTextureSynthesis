@@ -11,6 +11,7 @@
 #include "Granulate.h"
 #include "GrainCreator.h"
 #include <JuceHeader.h>
+#include "STFT.h"
 
 
 //==============================================================================
@@ -172,8 +173,6 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
         for (int n = 0; n < buffer.getNumSamples(); ++n){
             float x = buffer.getReadPointer(channel)[n];
             meterValueInput = vuAnalysisInput.processSample(x,channel);
-            
-            
             
             
             
