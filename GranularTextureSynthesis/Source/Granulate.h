@@ -84,10 +84,17 @@ public:
     // This function takes the array from arrangeOutputGrains() and will order grains for output per channel
     void outputArray();
     
+    
+    
+    
+    
+    
+    float* hanning(int N, short itype);
+    float mAverage(float x, int channel);
 
 private:
 
-    int grainSize = 800;
+    int grainSize = 1024;
     
     float algorithm = 1.f; // 1 = Asynchronous 2 = Synchronous 3 = Smart
     
@@ -128,5 +135,5 @@ private:
     int loopCount = 0;
     
     
-    
+//
 };

@@ -148,7 +148,7 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
      playHead = this->getPlayHead();
-     playHead->getCurrentPosition(currentPositionInfo);
+//     playHead->getCurrentPosition(currentPositionInfo);
     
 //    granulate.setLenIn(buffer.getNumSamples());
   
