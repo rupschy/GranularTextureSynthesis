@@ -11,8 +11,6 @@
 #pragma once
 #include "AudioEffect.h"
 #include <JuceHeader.h>
-#include "Permutation.h"
-#include "GrainCreator.h"
 
 #include "AccelerateFFT.h"
 
@@ -39,13 +37,14 @@ public:
     
     void setGainValue(float newGain);
     
-    float smoothFilter(float x, int c);
+    float setSmoothFilter(float x, int c);
+    float mAverage(float x, int channel);
     
-    void setVarianceValue(int newVariance);
+//    void setVarianceValue(int newVariance);
     
     
-    void splitBuffer(float * leftChannel, float * rightChannel, const int N);
-    void splitBuffer(juce::AudioBuffer<float>& buffer);
+//    void splitBuffer(float * leftChannel, float * rightChannel, const int N);
+//    void splitBuffer(juce::AudioBuffer<float>& buffer);
     
 //    int setLenIn(const int newlenIn);
     
@@ -70,7 +69,7 @@ public:
     // grainCreation functions
     //_______________________________________________________________________________________________________
     // This function should cut original signal into grains, window them, an store in matrix of dimensions [grainSize,numInputFrames]
-    void createGrains(int & grainSize, int & numInputFrames); // needs grainSize & needs numInputFrames
+//    void createGrains(int & grainSize, int & numInputFrames); // needs grainSize & needs numInputFrames
     
     void setGrainMatrix(float x, int channel, int** matrix, int rows, int cols, int * src, int src_size);
     
@@ -90,7 +89,7 @@ public:
     
     
     float* hanning(int N, short itype);
-    float mAverage(float x, int channel);
+
 
 private:
 

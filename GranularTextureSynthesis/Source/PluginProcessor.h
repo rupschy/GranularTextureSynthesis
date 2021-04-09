@@ -10,7 +10,6 @@
 
 #include <JuceHeader.h>
 #include "Granulate.h"
-#include "GrainCreator.h"
 #include "VUAnalysis.h"
 //==============================================================================
 /**

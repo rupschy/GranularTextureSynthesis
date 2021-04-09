@@ -9,9 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "Granulate.h"
-#include "GrainCreator.h"
 #include <JuceHeader.h>
-#include "STFT.h"
 
 
 //==============================================================================
@@ -181,7 +179,7 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
 
             
             if (smoothState == true){
-                granulate.smoothFilter(x,channel);
+                granulate.setSmoothFilter(x,channel);
             }
             if (smoothState == false){
                 

@@ -18,13 +18,7 @@
       <FILE id="hmW2qi" name="AccelerateFFT.cpp" compile="1" resource="0"
             file="Source/AccelerateFFT.cpp"/>
       <FILE id="Ykj0gh" name="AccelerateFFT.h" compile="0" resource="0" file="Source/AccelerateFFT.h"/>
-      <FILE id="obYr2D" name="Permutation.cpp" compile="1" resource="0" file="Source/Permutation.cpp"/>
-      <FILE id="ROqbDg" name="Permutation.h" compile="0" resource="0" file="Source/Permutation.h"/>
-      <FILE id="FEBXtC" name="GrainCreator.cpp" compile="1" resource="0"
-            file="Source/GrainCreator.cpp"/>
-      <FILE id="k6ev4L" name="GrainCreator.h" compile="0" resource="0" file="Source/GrainCreator.h"/>
       <FILE id="iyGVVU" name="SimpleMeter.h" compile="0" resource="0" file="../../JUCE test Plugins/Echo/Source/SimpleMeter.h"/>
-      <FILE id="QyCBQA" name="STFT.h" compile="0" resource="0" file="Source/STFT.h"/>
       <FILE id="qocmNw" name="VUAnalysis.h" compile="0" resource="0" file="../../JUCE test Plugins/Echo/Source/VUAnalysis.h"/>
       <FILE id="FccoFE" name="AudioEffect.cpp" compile="1" resource="0" file="Source/AudioEffect.cpp"/>
       <FILE id="j8DJTx" name="AudioEffect.h" compile="0" resource="0" file="Source/AudioEffect.h"/>

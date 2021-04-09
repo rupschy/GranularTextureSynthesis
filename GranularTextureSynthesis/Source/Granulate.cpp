@@ -53,7 +53,7 @@ void Granulate::setGainValue(float newGain){
     gain = newGain;
 }
 
-float Granulate::smoothFilter(float x, int c){
+float Granulate::setSmoothFilter(float x, int c){
     x = x;
     return x;
 }
