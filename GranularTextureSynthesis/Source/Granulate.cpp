@@ -58,30 +58,21 @@ float Granulate::setSmoothFilter(float x, int c){
     return x;
 }
 
-void Granulate::setVarianceValue(int newVariance){
-    variance = newVariance;
-}
-
-
-
-
-
-void Granulate::splitBuffer(float * leftChannel, float * rightChannel,  const int N){
-    for (int n = 0; n < N; n++){
-        float L = leftChannel[n];
-        float R = rightChannel[n];
-        
-    }
-    
-}
-
-void Granulate::splitBuffer(juce::AudioBuffer<float>& buffer){
-    float * leftChannel = buffer.getWritePointer(0);
-    float * rightChannel = buffer.getWritePointer(1);
-    int N = buffer.getNumSamples();
-    splitBuffer(leftChannel, rightChannel, N);
-    
-};
+//void Granulate::setVarianceValue(int newVariance){
+//    variance = newVariance;
+//}
+//void Granulate::splitBuffer(float * leftChannel, float * rightChannel,  const int N){
+//    for (int n = 0; n < N; n++){
+//        float L = leftChannel[n];
+//        float R = rightChannel[n];
+//    }
+//}
+//void Granulate::splitBuffer(juce::AudioBuffer<float>& buffer){
+//    float * leftChannel = buffer.getWritePointer(0);
+//    float * rightChannel = buffer.getWritePointer(1);
+//    int N = buffer.getNumSamples();
+//    splitBuffer(leftChannel, rightChannel, N);
+//};
 
 float Granulate::setFramesOut(float Fs, int grainSize, int N){
     int gHop = floor(grainSize/2);
@@ -106,26 +97,21 @@ float Granulate::setFramesOut(float Fs, int grainSize, int N){
 
 // Functional to create grains but cant work for windowing and setting overlap
 void Granulate::setInputMatrix(float x, int channel){
-    inputMatrix[inputArrayCount][inputArraySizeCount][channel] = x;
-    
-//    grainFFTMatrix[arraySize][arrayLengthSize][channel] = AccelerateFFT(x);
-    
-    inputArrayCount++;
-    inputArraySizeCount++;
-    
-    if (inputArrayCount >= arraySize){
-        inputArrayCount = 0;
+    inputMatrix[indexC][indexR][channel] = x;
+    indexR++;
+    if (indexR >= matrixR){
+        // grain is finished, go to next one.
+        indexR = 0;
+        indexC++;
+        // if a new array is need, initialize array of 1024 and create loop here for single grain creation for freq processing
     }
-    if (inputArraySizeCount >= arrayLengthSize){
-//        inputMatrix[inputArrayCount][inputArraySizeCount][channel];
-        inputArraySizeCount = 0;
-//        Other processing should be done here
-    }
-    loopCount = loopCount + 1;
-    if (int loopCount = arrayLength){
+    if (indexC >= matrixC){
+        indexC = 0;
         
     }
 }
+
+
 
 // What steps left?
 // 1. Split audio buffers per channel into grains either by analysis or by grainSize
@@ -141,21 +127,27 @@ void Granulate::setInputMatrix(float x, int channel){
 
 // New Functions in order of operation
 //_______________________________________________________________________________
-void Granulate::setPermParameters(int grainSize, int lenInN){
+//void Granulate::setPermParameters(int grainSize, int arrayLength){
+void Granulate::setPermParameters(int grainSize, int arrayLength){
     int gHop = floor(grainSize/2);
-    float numInputFrames = (float)floor((lenInN-grainSize+gHop)/gHop);
+    float numInputFrames = (float)floor((arrayLength-grainSize+gHop)/gHop);
     
+    // if no overlap
+    float simpleNumInputFrames = floor(arrayLength/grainSize);
     
-    float outLengthS = 2*(lenInN/48000.f); // Should use Fs not 48000
-    float outLengthN = outLengthS*48000.f; // Should use Fs not 48000
+    float outLengthS = 2*(arrayLength/Fs); // Should use Fs not 48000
+    float outLengthN = outLengthS*Fs; // Should use Fs not 48000
     float framesOut = floor((outLengthN-grainSize+gHop/gHop));
+    
+    // if no overlap
+    float simpleFramesOut = floor(outLengthN/grainSize);
 }
 
 int Granulate::setPermutationSet(int permutationSet, float framesOut, float numInputFrames, int grainSize){
     // Initialize parameters for boolean to augment permutation
-    int frameDif = abs((int(framesOut)-(int)numInputFrames));
-    int newPermutation[(int)framesOut];
-    for (int i = 0; i < framesOut; i++){
+    int frameDif = abs((int(simpleFramesOut)-(int)simpleNumInputFrames));
+    int newPermutation[(int)simpleFramesOut];
+    for (int i = 0; i < simpleFramesOut; i++){
         newPermutation[i] = i;
     }
 //    Randomization of values within the scale from 0 -> outFrames
@@ -163,8 +155,8 @@ int Granulate::setPermutationSet(int permutationSet, float framesOut, float numI
     std::random_shuffle(newPermutation,newPermutation+sizePerm);
     
 //    Change array from 0 -> outFrames to 0 -> numInputFrames
-    for (int j = 0; j < framesOut; j++){
-        if (newPermutation[j] > numInputFrames){
+    for (int j = 0; j < simpleFramesOut; j++){
+        if (newPermutation[j] > simpleNumInputFrames){
             newPermutation[j] = abs(newPermutation[j] - frameDif);
             if (newPermutation[j] == -1){
                 newPermutation[j] = 0;
@@ -174,21 +166,18 @@ int Granulate::setPermutationSet(int permutationSet, float framesOut, float numI
             newPermutation[j] = newPermutation[j];
         }
     }
-    
-    
-    
-    return newPermutation[(int)framesOut];
+    return newPermutation[(int)simpleFramesOut];
 }
 
 
-void Granulate::setGrainMatrix(float x, int channel, int** matrix, int rows, int cols, int * src, int src_size){
-    int pos = 0;
-    for (int i = 0; i < rows; ++i){
-        for (int j = 0; j < cols; ++j){
-            matrix[i][j] = src[pos++];
-        }
-    }
-}
+//void Granulate::setGrainMatrix(float x, int channel, int** matrix, int rows, int cols, int * src, int src_size){
+//    int pos = 0;
+//    for (int i = 0; i < rows; ++i){
+//        for (int j = 0; j < cols; ++j){
+//            matrix[i][j] = src[pos++];
+//        }
+//    }
+//}
 
 
 
@@ -283,3 +272,45 @@ void Granulate::setGrainMatrix(float x, int channel, int** matrix, int rows, int
 //    return mAvg;
 //}
 
+
+
+
+
+
+// functional grainCreation code!!!!
+//
+//int arrayS = 32;
+//int* k = 0;
+//int array[32] = {0};
+//
+//for (int n = 0; n < 32; ++n){
+//    array[n] = n;
+//}
+//
+//int sizePerm = sizeof(array)/sizeof(array[0]);
+//std::random_shuffle(array,array+sizePerm);
+////    int size = sizeof(array)/sizeof(array[0]);
+////    std::random_shuffle(array,array+size);
+//
+//int matrixR = 4;
+//int indexR = 0;
+//int matrixC = 8;
+//int indexC = 0;
+//int matrix[8][4] = {0};
+//
+//
+//// FUNCTIONAL
+//for (int k = 0; k < arrayS; ++k){
+//    // no loop, k just turns into x.
+//    matrix[indexC][indexR] = array[k];
+//    indexR++;
+//    if (indexR >= matrixR){
+//        // grain is finished, go to the next column
+//        indexR = 0;
+//        indexC++;
+////             if new array needed, initialize above and create loop for single grain here
+//    }
+//    if (indexC >= matrixC){
+//        indexC = 0;
+//    }
+//}

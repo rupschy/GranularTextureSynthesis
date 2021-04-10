@@ -119,6 +119,12 @@ AccelerateFFT<double>::~AccelerateFFT()
 template <>
 void AccelerateFFT<float>::performFFT (float* buffer, float* real, float* imag)
 {
+//    call this function by inputMatrix[column]
+//      ideally, this would initially give the starting pointer for said column.
+    
+//    might be able to use inputMatrix... if not,
+//    might have to fill up
+//    have 2 other arrays, with length of grain (1024 eg)
     vDSP_ctoz ((COMPLEX*)buffer, 2, &complexSplit, 1, fftSizeOver2);
     vDSP_fft_zrip (fftSetupFloat, &complexSplit, 1, log2n, FFT_FORWARD);
     

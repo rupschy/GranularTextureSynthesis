@@ -44,7 +44,7 @@ public:
     
     //===========================================================
     /** Sets the audio frame size to be used in the FFT */
-    void setAudioFrameSize (int frameSize);
+    void setAudioFrameSize (int frameSize); // length of grain (import from slider/dropdown)
     
     /** Performs the FFT using Apple Accelerate FFT */
     void performFFT (T* buffer, T* real, T* imag);

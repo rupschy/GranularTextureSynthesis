@@ -7,89 +7,100 @@
 
 #include <iostream>
 #include <cmath>
-//int ** generateMatrix(int rows, int cols){
-//    int** temp = new int*[rows];
-//
-//    for (int i = 0; i < rows; ++i){
-//        temp[i] = new int[cols];
-//    }
-//    return temp;
-//}
 
-//void printMatrix(int** matrix, int rows, int cols){
-//    for (int i = 0; i<rows; ++i){
-//        for (int j = 0; j < cols; ++j){
-//            std::cout << matrix[i][j] << " ";
-//        }
-//        std::cout << std::endl;
-//    }
-//}
-
-//void populateMatrix(int** matrix, int rows, int cols, int * src, int src_size){
-//    if (rows*cols != src_size){
-//        exit(-1);
-//    }
-//    int pos = 0;
-//    for (int i = 0; i < rows; ++i){
-//        for (int j = 0; j < cols; ++j){
-//            matrix[i][j] = src[pos++];
-//        }
-//    }
-//}
-
-//int** addMatrices(int** matA, int** matB, int a_rows, int a_cols){
-//    int** resultMat = generateMatrix(a_rows, a_cols);
-//
-//    for (int i = 0; i < a_rows; ++i){
-//        for (int j = 0; j < a_cols; ++j){
-//            resultMat[i][j] = matA[i][j] + matB[i][j];
-//        }
-//    }
-//
-//        return resultMat;
-//}
-
-void makeArray(int x);
-void makeMatrix(int x);
 
 int main() {
 
     int arrayS = 32;
+    int outArrayS = 64;
     int* k = 0;
     int array[32] = {0};
+    int outArrayIndex[8] = {0};
+    int simpleNumInputFrames = 32/8;
+    int simpleFramesOut = 64/8;
+    int frameDif = abs(simpleFramesOut- simpleNumInputFrames);
 
-    for (int n = 0; n < 32; ++n){
+    int outArray[64] = {0};
+    
+    for (int n = 0; n < 32; n++){
         array[n] = n;
     }
 
-//    int size = sizeof(array)/sizeof(array[0]);
-//    std::random_shuffle(array,array+size);
-
-    int matrixR = 4;
-    int indexR = 0;
-    int matrixC = 8;
-    int indexC = 0;
-
-    int matrix[4][8] = {0};
-
-    for (int indexC = 0; indexC < 8; ++indexC){
-        matrix[indexR][indexC] = array[*k++];
-        
-//        k = k + 1;
-        
-        
-        if (int k = 32){
-            k = 0;
+    for (int n = 0; n < 8; n++){
+        outArrayIndex[n] = n;
+    }
+    
+    int size = sizeof(array)/(sizeof(array[0]));
+    std::random_shuffle(array,array+size);
+    
+    for (int j = 0; j < simpleFramesOut; j++){
+        // *** added -1 to line below for 2*input size
+        if (outArrayIndex[j] > simpleNumInputFrames-1){
+            outArrayIndex[j] = outArrayIndex[j] - frameDif;
+            if (outArrayIndex[j] <= -1){
+                outArrayIndex[j] = 0;
+            }
+        if (outArrayIndex[j] >= frameDif){
+            outArrayIndex[j] = frameDif - outArrayIndex[j];
         }
-        
+        }
+        else {
+            outArrayIndex[j] = outArrayIndex[j];
+        }
+    }
+    
+    int oSize = sizeof(outArrayIndex)/sizeof(outArrayIndex[0]);
+    std::random_shuffle(outArrayIndex,outArrayIndex+oSize);
 
-
-        if (indexC = 8){
-//            k = k;
-            indexR = indexR+1;
+    
+    int matrixR = 4; //indexCount
+    int indexR = 0; // indexCount
+    int matrixC = 8; // grainLength
+    int indexC = 0; // grainLength
+    int matrix[8][4] = {0};
+    // FUNCTIONAL
+    for (int k = 0; k < arrayS; ++k){
+        // no loop, k just turns into x.
+        matrix[indexC][indexR] = array[k];
+        indexR++;
+        if (indexR >= matrixR){
+            // grain is finished, go to the next column
+            indexR = 0;
+            indexC++;
+//             if new array needed, initialize above and create loop for single grain here
+        }
+        if (indexC >= matrixC){
             indexC = 0;
         }
     }
+    
+    
+    
+    
+    
+    
+
+    
+    // creating output
+    //fill array inside from matrix
+    for (int k =0; k<outArrayS; ++k){
+        //randomize indexes
+        //change randArray[k] into x.
+        
+        
+        outArray[k] = matrix[outArrayIndex[indexC]][indexR];
+        indexR++;
+        if (indexR >=matrixR){
+            indexR = 0;
+            indexC++;
+        }
+        if (indexC >= matrixC){
+            indexC = 0;
+        }
+    }
+    
+    
+    
     return 0;
 }
 

@@ -155,7 +155,7 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
 //    float * rightChannel = buffer.getWritePointer(1);
 //    int N = buffer.getNumSamples();
 //    granulate.splitBuffer(leftChannel, rightChannel, N);
-    granulate.splitBuffer(buffer);
+//    granulate.splitBuffer(buffer);
     
 //    mutateState = false;
 //    if (mutateState == true){
