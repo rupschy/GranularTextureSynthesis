@@ -75,7 +75,7 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     grainSizeSlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     grainSizeSlider.setBounds(80,175,100,100);
 //    juce::Range<double> grainRange(800,48000,800);
-    grainSizeSlider.setRange(800, 48000, 800);
+    grainSizeSlider.setRange(1024, 49152, 1024);
     //grainSizeSlider.setMinAndMaxValues(0,1);
 //    grainSizeSlider.setMinValue(0);
 //    grainSizeSlider.setMaxValue(1);

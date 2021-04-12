@@ -13,7 +13,7 @@ int main() {
 
     int arrayS = 32;
     int outArrayS = 64;
-    int* k = 0;
+    //int* k = 0;
     int array[32] = {0};
     int outArrayIndex[8] = {0};
     int simpleNumInputFrames = 32/8;

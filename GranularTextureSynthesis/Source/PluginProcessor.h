@@ -54,7 +54,7 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
-    int grainSize = 800;
+    int grainSize = 1024;
     
     float algorithm = 1.f;
     

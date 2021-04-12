@@ -74,14 +74,14 @@ float Granulate::setSmoothFilter(float x, int c){
 //    splitBuffer(leftChannel, rightChannel, N);
 //};
 
-float Granulate::setFramesOut(float Fs, int grainSize, int N){
-    int gHop = floor(grainSize/2);
-    float outLengthS = 2*N;
-    float outLengthN = outLengthS*Fs;
-    float framesOut = floor((outLengthN-grainSize+gHop)/gHop);
-    
-    return framesOut;
-}
+//float Granulate::setFramesOut(float Fs, int grainSize, int N){
+//    int gHop = floor(grainSize/2);
+//    float outLengthS = 2*N;
+//    float outLengthN = outLengthS*Fs;
+//    float framesOut = floor((outLengthN-grainSize+gHop)/gHop);
+//    
+//    return framesOut;
+//}
 
 
 
@@ -109,6 +109,7 @@ void Granulate::setInputMatrix(float x, int channel){
         indexC = 0;
         
     }
+    // how to set up in Pprocessor.cpp? float? need to parse in 
 }
 
 
@@ -129,44 +130,103 @@ void Granulate::setInputMatrix(float x, int channel){
 //_______________________________________________________________________________
 //void Granulate::setPermParameters(int grainSize, int arrayLength){
 void Granulate::setPermParameters(int grainSize, int arrayLength){
-    int gHop = floor(grainSize/2);
-    float numInputFrames = (float)floor((arrayLength-grainSize+gHop)/gHop);
+    int arrayS = 262144;
+    const static int outArrayS = 2*262144;
+    float outArray[outArrayS][2] = {0.f};
+    
+    
+    
+    
+    
+    
+//    int gHop = floor(grainSize/2);
+//    float numInputFrames = (float)floor((arrayLength-grainSize+gHop)/gHop);
+
+//    float outLengthS = 2*(arrayLength/Fs); // Should use Fs not 48000
+//    float outLengthN = outLengthS*Fs; // Should use Fs not 48000
+//    float framesOut = floor((outLengthN-grainSize+gHop/gHop));
     
     // if no overlap
-    float simpleNumInputFrames = floor(arrayLength/grainSize);
+    int simpleNumInputFrames = floor(arrayS/grainSize);
+    int simpleFramesOut = floor(outArrayS/grainSize);
     
-    float outLengthS = 2*(arrayLength/Fs); // Should use Fs not 48000
-    float outLengthN = outLengthS*Fs; // Should use Fs not 48000
-    float framesOut = floor((outLengthN-grainSize+gHop/gHop));
+    int outputArrayIndex[512] = {0};
+    if (sizeof(outputArrayIndex) != simpleFramesOut){
+        int g = simpleFramesOut;
+        outputArrayIndex[g] = {0};
+    }
     
-    // if no overlap
-    float simpleFramesOut = floor(outLengthN/grainSize);
+    for (int n = 0; n < simpleFramesOut; n++){
+        outputArrayIndex[n] = n;
+    }
+
+    
 }
 
-int Granulate::setPermutationSet(int permutationSet, float framesOut, float numInputFrames, int grainSize){
+void Granulate::setPermutationSet(int & grainSize){
     // Initialize parameters for boolean to augment permutation
+    int arrayS = 262144;
+    const static int outArrayS = 2*262144;
+    float outArray[outArrayS][2] = {0.f};
+    int simpleNumInputFrames = floor(arrayS/grainSize);
+    int simpleFramesOut = floor(outArrayS/grainSize);
+    
+    int outputArrayIndex[512] = {0};
+    if (sizeof(outputArrayIndex) != simpleFramesOut){
+        int g = simpleFramesOut;
+        outputArrayIndex[g] = {0};
+    }
+    
+    for (int n = 0; n < simpleFramesOut; n++){
+        
+    }
+    
     int frameDif = abs((int(simpleFramesOut)-(int)simpleNumInputFrames));
-    int newPermutation[(int)simpleFramesOut];
     for (int i = 0; i < simpleFramesOut; i++){
-        newPermutation[i] = i;
+        outputArrayIndex[i] = i;
     }
 //    Randomization of values within the scale from 0 -> outFrames
-    int sizePerm = sizeof(newPermutation)/sizeof(newPermutation[0]);
-    std::random_shuffle(newPermutation,newPermutation+sizePerm);
+    int sizePerm = sizeof(outputArrayIndex)/sizeof(outputArrayIndex[0]);
+    std::random_shuffle(outputArrayIndex,outputArrayIndex+sizePerm);
     
 //    Change array from 0 -> outFrames to 0 -> numInputFrames
     for (int j = 0; j < simpleFramesOut; j++){
-        if (newPermutation[j] > simpleNumInputFrames){
-            newPermutation[j] = abs(newPermutation[j] - frameDif);
-            if (newPermutation[j] == -1){
-                newPermutation[j] = 0;
+        if (outputArrayIndex[j] > simpleNumInputFrames - 1){
+            outputArrayIndex[j] = abs(outputArrayIndex[j] - frameDif);
+            if (outputArrayIndex[j] <= -1){
+                outputArrayIndex[j] = 0;
             }
+        if (outputArrayIndex[j] >= frameDif){
+            outputArrayIndex[j] = frameDif - outputArrayIndex[j];
+        }
         }
         else {
-            newPermutation[j] = newPermutation[j];
+            outputArrayIndex[j] = outputArrayIndex[j];
         }
     }
-    return newPermutation[(int)simpleFramesOut];
+//    return outputArrayIndex[(int)simpleFramesOut];
+}
+
+void Granulate::arrangeOutputGrains(){
+    
+}
+
+float Granulate::outputArray(float x, int channel){
+//    outputArrayF[outIndex][channel]
+     x = inputMatrix[outputArrayIndex[indexC]][indexR][channel];
+    indexR++;
+    outIndex++;
+    if (indexR >=matrixR){
+        indexR = 0;
+        indexC++;
+    }
+    if (indexC >= matrixC){
+        indexC = 0;
+    }
+//    if (outIndex >= outputArrayLength){
+//        outIndex = 0;
+//    }
+    return x;
 }
 
 

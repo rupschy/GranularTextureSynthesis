@@ -48,7 +48,7 @@ public:
     
 //    int setLenIn(const int newlenIn);
     
-    float setFramesOut(float Fs, int grainSize, int N);
+//    float setFramesOut(float Fs, int grainSize, int N);
     
     // Take in sample, from PProcessor, input into array, fill array, when count to max, then do processing
     void setInputArray(float x, int channel);
@@ -61,7 +61,7 @@ public:
     //    sets parameters for use in later functions in/out of class
     void setPermParameters(int grainSize, int lenInN);
     
-    int setPermutationSet(int permutationSet, float framesOut, float numInputFrames, int grainSize);
+    void setPermutationSet(int & grainSize);
     
     
     
@@ -71,7 +71,7 @@ public:
     // This function should cut original signal into grains, window them, an store in matrix of dimensions [grainSize,numInputFrames]
 //    void createGrains(int & grainSize, int & numInputFrames); // needs grainSize & needs numInputFrames
     
-    void setGrainMatrix(float x, int channel, int** matrix, int rows, int cols, int * src, int src_size);
+//    void setGrainMatrix(float x, int channel, int** matrix, int rows, int cols, int * src, int src_size);
     
     // This function should take each grain and convert into the frequency domain using STFT.h. It should also randomize the frequency bins for each respective grain. Should output multi-dimensional array of [nfft,mfft,numGrains] dimensions
     // This funciton also converts the multi-dimensional arrays back into the time domain and initializes new grain matrix of length [grainSize,numInputFrames]
@@ -81,7 +81,7 @@ public:
     void arrangeOutputGrains();
     
     // This function takes the array from arrangeOutputGrains() and will order grains for output per channel
-    void outputArray();
+    float outputArray(float x, int channel);
     
     
     
@@ -114,18 +114,31 @@ private:
     static const int matrixC = 1024;
     int indexC = 0; // grain length
     
+
+    
     float inputMatrix[matrixC][matrixR][2] = {0.f};
     
     // Permutation functions
     //_______________________________________________________________________________________________________
     float framesOut;
     float numInputFrames;
-    float simpleNumInputFrames;
-    float simpleFramesOut;
+    int simpleNumInputFrames = 256;
+    int simpleFramesOut = 512;
     
     // grainCreation functions
-    static const int arrayLength = 262144;
-
+    static const int inputArrayLength = 262144;
+    static const int outputArrayLength = 2*inputArrayLength;
+    
+    int outputArrayIndex[512] = {0};
+    
+    float outputArrayF[outputArrayLength][2] = {0.f};
+    
+    //Output index initialization
+    int oMatrixR = floor(outputArrayLength/grainSize);
+    int oIndexR = 0;
+    int oMatrixC = floor(outputArrayLength/simpleFramesOut);
+    int oIndexC = 0;
+    int outIndex = 0;
     
     
 //
