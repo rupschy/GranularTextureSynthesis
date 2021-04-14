@@ -12,10 +12,10 @@
 
 class AudioEffect{
 public:
-    virtual float processSample(float x, int c) = 0;
-    
-    virtual void processSignal(float * signal, const int numSamples, const int c)= 0;
-    
+//    virtual float processMakeupGain(float x, int c) = 0;
+//    
+//    virtual void processSignal(float * signal, const int numSamples, const int c)= 0;
+//    
     void prepare(float newFs);
     
 protected:

@@ -57,6 +57,7 @@ public:
     int grainSize = 1024;
     
     float algorithm = 1.f;
+    int grainSizeChoice = 5; // 1: 64 2: 128 3: 256 4: 512 5: 1024 6: 2048 7: 4096 8: 8192
     
     //For Simple Meter
     std::atomic<float> meterValueInput;
@@ -75,6 +76,9 @@ public:
     int variance = 0;
     
     
+    //AudioProcessorValueTreeState Save/Recall info
+    AudioProcessorValueTreeState state;
+    AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     
     
 private:

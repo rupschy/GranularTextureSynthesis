@@ -37,17 +37,23 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
 //    smoothingFilterLabel.attachToComponent(&algSelector,false);
 //    smoothingFilterLabel.setJustificationType(Justification::centred);
 //    addAndMakeVisible(smoothingFilterLabel);
-
-    gainSliderLabel.setText("Make-up", dontSendNotification);
-    gainSliderLabel.attachToComponent(&gainSlider,false);
-    gainSliderLabel.setJustificationType(Justification::centred);
-    addAndMakeVisible(gainSliderLabel);
+//
+//    gainSliderLabel.setText("Make-up", dontSendNotification);
+//    gainSliderLabel.attachToComponent(&gainSlider,false);
+//    gainSliderLabel.setJustificationType(Justification::centred);
+//    addAndMakeVisible(gainSliderLabel);
 
     
     algorithmSelectorLabel.setText("Select Algorithm", dontSendNotification);
     algorithmSelectorLabel.attachToComponent(&algSelector,false);
     algorithmSelectorLabel.setJustificationType(Justification::centred);
     addAndMakeVisible(algorithmSelectorLabel);
+    
+    
+//    grainSizeSelectorLabel.setText("Select Grain Size", dontSendNotification);
+//    grainSizeSelectorLabel.attachToComponent(&grainSizeSelector,false);
+//    grainSizeSelectorLabel.setJustificationType(Justification::centred);
+//    addAndMakeVisible(grainSizeSelectorLabel);
     
     //inputMeterLabel.setFont(6.f);
     inputMeterLabel.setText("In", dontSendNotification);
@@ -65,25 +71,25 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     smoothingFilterLabel.setBounds(520,35,150,25);
     addAndMakeVisible(smoothingFilterLabel);
     
-    varianceSliderLabel.setText("Variance", dontSendNotification);
-    varianceSliderLabel.attachToComponent(&varianceSlider,false);
-    varianceSliderLabel.setJustificationType(Justification::centred);
-    addAndMakeVisible(varianceSliderLabel);
+//    varianceSliderLabel.setText("Variance", dontSendNotification);
+//    varianceSliderLabel.attachToComponent(&varianceSlider,false);
+//    varianceSliderLabel.setJustificationType(Justification::centred);
+//    addAndMakeVisible(varianceSliderLabel);
     
     
-    grainSizeSlider.addListener(this);
-    grainSizeSlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    grainSizeSlider.setBounds(80,175,100,100);
+//    grainSizeSlider.addListener(this);
+//    grainSizeSlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+//    grainSizeSlider.setBounds(80,175,100,100);
 //    juce::Range<double> grainRange(800,48000,800);
-    grainSizeSlider.setRange(1024, 49152, 1024);
+//    grainSizeSlider.setRange(1024, 1024, 1024);
     //grainSizeSlider.setMinAndMaxValues(0,1);
 //    grainSizeSlider.setMinValue(0);
 //    grainSizeSlider.setMaxValue(1);
     //grainSizeSlider.setRange(128.f,1024.f,0.1f);
-    grainSizeSlider.setValue(audioProcessor.grainSize);
-    grainSizeSlider.setNumDecimalPlacesToDisplay(0);
-    grainSizeSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 75,25);
-    addAndMakeVisible(grainSizeSlider);
+//    grainSizeSlider.setValue(audioProcessor.grainSize);
+//    grainSizeSlider.setNumDecimalPlacesToDisplay(0);
+//    grainSizeSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 75,25);
+//    addAndMakeVisible(grainSizeSlider);
     
     gainSlider.addListener(this);
     gainSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
@@ -100,6 +106,21 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     algSelector.setSelectedId(1);
     algSelector.setBounds(340,60,120,40);
     addAndMakeVisible(algSelector);
+    
+    grainSizeSelector.addListener(this);
+    grainSizeSelector.addItem("64",1);
+    grainSizeSelector.addItem("128",2);
+    grainSizeSelector.addItem("256",3);
+    grainSizeSelector.addItem("512",4);
+    grainSizeSelector.addItem("1024",5);
+    grainSizeSelector.addItem("2048",6);
+    grainSizeSelector.addItem("4096",7);
+    grainSizeSelector.addItem("8192",8);
+    grainSizeSelector.setSelectedId(5);
+    grainSizeSelector.setBounds(340,210,120,40);
+    addAndMakeVisible(grainSizeSelector);
+    
+    
     
     inputMeter.setBounds(545,185,10,100);
     inputMeter.configuration = SimpleMeter::VERTICAL;
@@ -150,13 +171,13 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
 //    mutateButton.setEnabled(audioProcessor.mutateState);
 //    notMutateButton.setEnabled(!audioProcessor.mutateState);
     
-    varianceSlider.addListener(this);
-    varianceSlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    varianceSlider.setBounds(180,175,100,100);
-    varianceSlider.setRange(0, 100, 1);
-    varianceSlider.setValue(audioProcessor.grainSize);
-    varianceSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 75,25);
-    addAndMakeVisible(varianceSlider);
+//    varianceSlider.addListener(this);
+//    varianceSlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+//    varianceSlider.setBounds(180,175,100,100);
+//    varianceSlider.setRange(0, 100, 1);
+//    varianceSlider.setValue(audioProcessor.grainSize);
+//    varianceSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 75,25);
+//    addAndMakeVisible(varianceSlider);
     
 
 }
@@ -226,15 +247,15 @@ void GranularTextureSynthesisAudioProcessorEditor::resized()
 
 void GranularTextureSynthesisAudioProcessorEditor::sliderValueChanged(Slider * slider){
     
-    if (slider == &grainSizeSlider){
-        audioProcessor.grainSize = grainSizeSlider.getValue();
-    }
+//    if (slider == &grainSizeSlider){
+//        audioProcessor.grainSize = grainSizeSlider.getValue();
+//    }
     if (slider == &gainSlider){
         audioProcessor.gain = gainSlider.getValue();
     }
-    if (slider == &varianceSlider){
-        audioProcessor.variance = varianceSlider.getValue();
-    }
+//    if (slider == &varianceSlider){
+//        audioProcessor.variance = varianceSlider.getValue();
+//    }
 }
 
 void GranularTextureSynthesisAudioProcessorEditor::comboBoxChanged(ComboBox * comboBox){
@@ -251,14 +272,46 @@ void GranularTextureSynthesisAudioProcessorEditor::comboBoxChanged(ComboBox * co
             // Asynchronous
             audioProcessor.algorithm =3.f;
         }
+    if(comboBox == &grainSizeSelector)
+        if(grainSizeSelector.getSelectedId() == 1){
+            //64
+            audioProcessor.grainSize = 64;
+        }
+        if(grainSizeSelector.getSelectedId() == 2){
+            //64
+            audioProcessor.grainSize = 128;
+        }
+        if(grainSizeSelector.getSelectedId() == 3){
+            //64
+            audioProcessor.grainSize = 256;
+        }
+        if(grainSizeSelector.getSelectedId() == 4){
+            //64
+            audioProcessor.grainSize = 512;
+        }
+        if(grainSizeSelector.getSelectedId() == 5){
+            //64
+            audioProcessor.grainSize = 1024;
+        }
+        if(grainSizeSelector.getSelectedId() == 6){
+            //64
+            audioProcessor.grainSize = 2048;
+        }
+        if(grainSizeSelector.getSelectedId() == 7){
+            //64
+            audioProcessor.grainSize = 4096;
+        }
+        if(grainSizeSelector.getSelectedId() == 8){
+            //64
+            audioProcessor.grainSize = 8192;
+        }
     }
     
 }
 
 void GranularTextureSynthesisAudioProcessorEditor::timerCallback(){
     inputMeter.update(audioProcessor.meterValueInput);
-    outputMeter.update(audioProcessor.meterValueInput);
-    
+    outputMeter.update(audioProcessor.meterValueOutput);
 }
 
 

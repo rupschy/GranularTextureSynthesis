@@ -22,7 +22,7 @@ GranularTextureSynthesisAudioProcessor::GranularTextureSynthesisAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), state(*this, nullptr, "grainSizeChoice", createParameterLayout())
 #endif
 {
     
@@ -30,6 +30,19 @@ GranularTextureSynthesisAudioProcessor::GranularTextureSynthesisAudioProcessor()
 
 GranularTextureSynthesisAudioProcessor::~GranularTextureSynthesisAudioProcessor()
 {
+}
+
+//NEEDS TO CHANGE
+// AUDIO PROCESSOR VALUE TREE STATE
+AudioProcessorValueTreeState::ParameterLayout GranularTextureSynthesisAudioProcessor::createParameterLayout(){
+    // vector of pointers made up of different parameters
+    std::vector<std::unique_ptr<RangedAudioParameter>> params;
+    // Matches parameters set in Editor.cpp
+    params.push_back(std::make_unique<AudioParameterInt>("grainSizeChoice","Grain Size",1,8,5));
+    // can add additional parameters using params.push_back(std::make_unique<AudioParameterInt> ("param ID","name",0,1,0.5);
+    
+    return {params.begin(),params.end()};
+    
 }
 
 //==============================================================================
@@ -100,7 +113,12 @@ void GranularTextureSynthesisAudioProcessor::prepareToPlay (double sampleRate, i
     granulate.prepare(sampleRate);
     vuAnalysisInput.setSampleRate(sampleRate);
     vuAnalysisOutput.setSampleRate(sampleRate);
-    granulate.setPermutationSet(grainSize);
+    granulate.setGrainSize(grainSize);
+    
+//    initialize here then afterwards create another
+//    granulate.setPermutationSet(grainSize);
+    
+    
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 }
@@ -152,11 +170,7 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
 //    granulate.setLenIn(buffer.getNumSamples());
   
     
-//    float * leftChannel = buffer.getWritePointer(0);
-//    float * rightChannel = buffer.getWritePointer(1);
-//    int N = buffer.getNumSamples();
-//    granulate.splitBuffer(leftChannel, rightChannel, N);
-//    granulate.splitBuffer(buffer);
+
     
 //    mutateState = false;
 //    if (mutateState == true){
@@ -165,30 +179,31 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
     
 //    continuousProc = false;
         //granulate.setGrainSize(grainSize);
-    
+//    granulate.setPermutationSet(grainSize);
     //granulate.setVarianceValue(variance);
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel){
         for (int n = 0; n < buffer.getNumSamples(); ++n){
             float x = buffer.getReadPointer(channel)[n];
+            float y;
             meterValueInput = vuAnalysisInput.processSample(x,channel);
             
-            granulate.setInputMatrix(x, channel);
-            x = granulate.outputArray(x, channel);
-            
-//            x = granulate.processSample(x, channel);
-//            buffer.getWritePointer(channel)[n] = x;
+            granulate.setPermParameters(grainSize);
+            granulate.setPermutationSet(grainSize);
+            y = granulate.setInputMatrix(x, channel);
+            y = granulate.outputArray(channel);
+//            y = granulate.processMakeupGain(y,channel);
 
-            
-            if (smoothState == true){
-                granulate.setSmoothFilter(x,channel);
-            }
-            if (smoothState == false){
-                
-            }
-            
-            
-            meterValueOutput = vuAnalysisOutput.processSample(x,channel);
+//            if (smoothState == true){
+//                granulate.setSmoothFilter(x,channel);
+//            }
+//            if (smoothState == false){
+//            }
+//            changed float y to x for test
+            meterValueOutput = vuAnalysisOutput.processSample(y,channel);
+            buffer.getWritePointer(channel)[n] = y;
+
+
         }
         
 

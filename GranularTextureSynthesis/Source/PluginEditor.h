@@ -62,6 +62,7 @@ private:
     Label gainSliderLabel;
     Label smoothFilterLabel;
     Label varianceSliderLabel;
+    Label grainSizeSelectorLabel;
     
     // Visual meter
     SimpleMeter inputMeter;
@@ -83,6 +84,8 @@ private:
     // Drop-down for algorithm type
     ComboBox algSelector;
     // Once inheriting behavior like comboBox, can be used anywhere in class now
+    ComboBox grainSizeSelector;
+    
     
     ToggleButton mutateButton;
     ToggleButton notMutateButton;

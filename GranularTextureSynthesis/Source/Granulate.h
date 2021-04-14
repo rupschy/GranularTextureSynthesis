@@ -22,10 +22,11 @@ public:
 
     //Constructor
     Granulate();
+//    ~Granualte();
     
     void processSignal(float * signal, const int numSamples, const int c);
     
-    float processSample(float x,int c) ;
+    float processMakeupGain(float x,int c) ;
     
     void setGrainSize(int newGrainSize);
     
@@ -51,15 +52,15 @@ public:
 //    float setFramesOut(float Fs, int grainSize, int N);
     
     // Take in sample, from PProcessor, input into array, fill array, when count to max, then do processing
-    void setInputArray(float x, int channel);
-    void setInputMatrix(float x, int channel);
+//    void setInputArray(float x, int channel);
+    float setInputMatrix(float x, int channel);
     
     
     
     // Permutation functions
     //_______________________________________________________________________________________________________
     //    sets parameters for use in later functions in/out of class
-    void setPermParameters(int grainSize, int lenInN);
+    void setPermParameters(int &grainSize);
     
     void setPermutationSet(int & grainSize);
     
@@ -81,7 +82,7 @@ public:
     void arrangeOutputGrains();
     
     // This function takes the array from arrangeOutputGrains() and will order grains for output per channel
-    float outputArray(float x, int channel);
+    float outputArray(int channel);
     
     
     
@@ -93,9 +94,10 @@ public:
 
 private:
 
-    int grainSize = 1024;
+    int grainSize = 1024; // choices: 64 128 256 512 1024 2048 4096 8192
     
     float algorithm = 1.f; // 1 = Asynchronous 2 = Synchronous 3 = Smart
+    int grainSizeChoice = 5; //initialized at 1024 samples per grain
     
     float permutation = {0.f};
     
@@ -118,11 +120,9 @@ private:
     
     float inputMatrix[matrixC][matrixR][2] = {0.f};
     
-    // Permutation functions
-    //_______________________________________________________________________________________________________
     float framesOut;
     float numInputFrames;
-    int simpleNumInputFrames = 256;
+//    int simpleNumInputFrames = 256;
     int simpleFramesOut = 512;
     
     // grainCreation functions

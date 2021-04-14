@@ -15,14 +15,14 @@ using namespace std;
 
 // Constructor
 Granulate::Granulate(){}
-void Granulate::processSignal(float *signal, const int numSamples, const int c){
-    for (int n = 0; n < numSamples; n++){
-        float x = signal[n]; // get value at memory location
-        x = processSample(x,c);
-        signal[n] = x;
-    }
-}
-float Granulate::processSample(float x, int c){
+//void Granulate::processSignal(float *signal, const int numSamples, const int c){
+//    for (int n = 0; n < numSamples; n++){
+//        float x = signal[n]; // get value at memory location
+//        x = processSample(x,c);
+//        signal[n] = x;
+//    }
+//}
+float Granulate::processMakeupGain(float x, int c){
     
 
     float y = gain * x;
@@ -96,7 +96,9 @@ float Granulate::setSmoothFilter(float x, int c){
 
 
 // Functional to create grains but cant work for windowing and setting overlap
-void Granulate::setInputMatrix(float x, int channel){
+float Granulate::setInputMatrix(float x, int channel){
+    
+
     inputMatrix[indexC][indexR][channel] = x;
     indexR++;
     if (indexR >= matrixR){
@@ -109,7 +111,12 @@ void Granulate::setInputMatrix(float x, int channel){
         indexC = 0;
         
     }
-    // how to set up in Pprocessor.cpp? float? need to parse in 
+    //pass input sample into output buffer
+    
+    // how to set up in Pprocessor.cpp? float? need to parse in
+    return inputMatrix[indexC][indexR][channel];
+    
+    
 }
 
 
@@ -129,10 +136,10 @@ void Granulate::setInputMatrix(float x, int channel){
 // New Functions in order of operation
 //_______________________________________________________________________________
 //void Granulate::setPermParameters(int grainSize, int arrayLength){
-void Granulate::setPermParameters(int grainSize, int arrayLength){
-    int arrayS = 262144;
-    const static int outArrayS = 2*262144;
-    float outArray[outArrayS][2] = {0.f};
+void Granulate::setPermParameters(int &grainSize){
+//    int arrayS = 262144;
+//    const static int outArrayS = 2*262144;
+//    float outArray[outArrayS][2] = {0.f};
     
     
     
@@ -147,8 +154,8 @@ void Granulate::setPermParameters(int grainSize, int arrayLength){
 //    float framesOut = floor((outLengthN-grainSize+gHop/gHop));
     
     // if no overlap
-    int simpleNumInputFrames = floor(arrayS/grainSize);
-    int simpleFramesOut = floor(outArrayS/grainSize);
+    int simpleNumInputFrames = floor(inputArrayLength/grainSize);
+    int simpleFramesOut = floor(outputArrayLength/grainSize);
     
     int outputArrayIndex[512] = {0};
     if (sizeof(outputArrayIndex) != simpleFramesOut){
@@ -159,26 +166,26 @@ void Granulate::setPermParameters(int grainSize, int arrayLength){
     for (int n = 0; n < simpleFramesOut; n++){
         outputArrayIndex[n] = n;
     }
+    
+    if (simpleNumInputFrames != matrixR){
+        simpleNumInputFrames = floor(inputArrayLength/grainSize);
+    }
 
     
 }
 
 void Granulate::setPermutationSet(int & grainSize){
     // Initialize parameters for boolean to augment permutation
-    int arrayS = 262144;
-    const static int outArrayS = 2*262144;
-    float outArray[outArrayS][2] = {0.f};
-    int simpleNumInputFrames = floor(arrayS/grainSize);
-    int simpleFramesOut = floor(outArrayS/grainSize);
+//    int arrayS = 262144;
+//    const static int outArrayS = 2*262144;
+//    float outArray[outArrayS][2] = {0.f};
+    int simpleNumInputFrames = floor(inputArrayLength/grainSize);
+    int simpleFramesOut = floor(outputArrayLength/grainSize);
     
     int outputArrayIndex[512] = {0};
     if (sizeof(outputArrayIndex) != simpleFramesOut){
         int g = simpleFramesOut;
         outputArrayIndex[g] = {0};
-    }
-    
-    for (int n = 0; n < simpleFramesOut; n++){
-        
     }
     
     int frameDif = abs((int(simpleFramesOut)-(int)simpleNumInputFrames));
@@ -211,21 +218,20 @@ void Granulate::arrangeOutputGrains(){
     
 }
 
-float Granulate::outputArray(float x, int channel){
+float Granulate::outputArray(int channel){
 //    outputArrayF[outIndex][channel]
-     x = inputMatrix[outputArrayIndex[indexC]][indexR][channel];
+     float x = inputMatrix[outputArrayIndex[indexC]][indexR][channel];
     indexR++;
     outIndex++;
     if (indexR >=matrixR){
         indexR = 0;
+        // switch to another grain and output those samples
         indexC++;
     }
     if (indexC >= matrixC){
         indexC = 0;
     }
-//    if (outIndex >= outputArrayLength){
-//        outIndex = 0;
-//    }
+
     return x;
 }
 
