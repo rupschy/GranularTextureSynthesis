@@ -28,21 +28,10 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     setSize (700, 350);
     
     // Label classes
-    grainSizeLabel.setText("Grain Size", dontSendNotification);
-    grainSizeLabel.attachToComponent(&grainSizeSlider,false);
-    grainSizeLabel.setJustificationType(Justification::centred);
-    addAndMakeVisible(grainSizeLabel);
-    
-//    smoothingFilterLabel.setText("Smoothing Filter?", dontSendNotification);
-//    smoothingFilterLabel.attachToComponent(&algSelector,false);
-//    smoothingFilterLabel.setJustificationType(Justification::centred);
-//    addAndMakeVisible(smoothingFilterLabel);
-//
     gainSliderLabel.setText("Make-up", dontSendNotification);
     gainSliderLabel.attachToComponent(&gainSlider,false);
     gainSliderLabel.setJustificationType(Justification::centred);
     addAndMakeVisible(gainSliderLabel);
-
     
     algorithmSelectorLabel.setText("Select Algorithm", dontSendNotification);
     algorithmSelectorLabel.attachToComponent(&algSelector,false);
@@ -55,13 +44,11 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     grainSizeSelectorLabel.setJustificationType(Justification::centred);
     addAndMakeVisible(grainSizeSelectorLabel);
     
-    //inputMeterLabel.setFont(6.f);
     inputMeterLabel.setText("In", dontSendNotification);
     inputMeterLabel.attachToComponent(&inputMeter,false);
     inputMeterLabel.setJustificationType(Justification::centredBottom);
     addAndMakeVisible(inputMeterLabel);
     
-    //outputMeterLabel.setFont(6.f);
     outputMeterLabel.setText("Out", dontSendNotification);
     outputMeterLabel.attachToComponent(&outputMeter,false);
     outputMeterLabel.setJustificationType(Justification::centredBottom);
@@ -86,38 +73,15 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     wetDrySliderLabel.setJustificationType(Justification::centred);
     addAndMakeVisible(wetDrySliderLabel);
     
-    
-//    grainSizeSlider.addListener(this);
-//    grainSizeSlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-//    grainSizeSlider.setBounds(80,175,100,100);
-//    juce::Range<double> grainRange(800,48000,800);
-//    grainSizeSlider.setRange(1024, 1024, 1024);
-    //grainSizeSlider.setMinAndMaxValues(0,1);
-//    grainSizeSlider.setMinValue(0);
-//    grainSizeSlider.setMaxValue(1);
-    //grainSizeSlider.setRange(128.f,1024.f,0.1f);
-//    grainSizeSlider.setValue(audioProcessor.grainSize);
-//    grainSizeSlider.setNumDecimalPlacesToDisplay(0);
-//    grainSizeSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 75,25);
-//    addAndMakeVisible(grainSizeSlider);
-    
-    gainSlider.addListener(this);
-    gainSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
-    gainSlider.setValue(audioProcessor.gain);
-    gainSlider.setRange(0.01f, 1.5f, 0.01f);
-    gainSlider.setBounds(615,185,50,135);
-    gainSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 45,45);
-    addAndMakeVisible(gainSlider);
-    
-    algSelector.addListener(this);
+
+    //ComboBoxes
     algSelector.addItem("Asynchronous",1);
     algSelector.addItem("Synchronous",2);
     algSelector.addItem("sMaRt",3);
-    algSelector.setSelectedId(1);
     algSelector.setBounds(350,60,120,40);
     addAndMakeVisible(algSelector);
+    comboBoxAttachments.emplace_back(new AudioProcessorValueTreeState::ComboBoxAttachment(audioProcessor.state, "algSelectionValue", algSelector));
     
-    grainSizeSelector.addListener(this);
     grainSizeSelector.addItem("64",1);
     grainSizeSelector.addItem("128",2);
     grainSizeSelector.addItem("256",3);
@@ -126,20 +90,20 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     grainSizeSelector.addItem("2048",6);
     grainSizeSelector.addItem("4096",7);
     grainSizeSelector.addItem("8192",8);
-    grainSizeSelector.setSelectedId(5);
     grainSizeSelector.setBounds(350,160,120,40);
     addAndMakeVisible(grainSizeSelector);
+    comboBoxAttachments.emplace_back(new AudioProcessorValueTreeState::ComboBoxAttachment(audioProcessor.state,"grainSizeSelectionValue", grainSizeSelector));
     
-    //Create combobox for overlap % options
-    overlapSelector.addListener(this);
     overlapSelector.addItem("0%", 1);
     overlapSelector.addItem("25%",2);
     overlapSelector.addItem("50%",3);
     overlapSelector.addItem("75%",4);
-    overlapSelector.setSelectedId(3);
     overlapSelector.setBounds(350,260,120,40);
     addAndMakeVisible(overlapSelector);
+    comboBoxAttachments.emplace_back(new AudioProcessorValueTreeState::ComboBoxAttachment(audioProcessor.state, "overlapSelectionValue", overlapSelector));
     
+    
+    //Meters
     inputMeter.setBounds(545,185,10,100);
     inputMeter.configuration = SimpleMeter::VERTICAL;
     addAndMakeVisible(inputMeter);
@@ -148,62 +112,48 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     outputMeter.configuration = SimpleMeter::VERTICAL;
     addAndMakeVisible(outputMeter);
     
+    
+    //Buttons
     smoothButton.addListener(this);
     smoothButton.setBounds(565,75,50,50);
     smoothButton.setButtonText("Yes");
     smoothButton.setToggleState(audioProcessor.smoothState, dontSendNotification);
     smoothButton.setRadioGroupId(1);
-    //smoothButton.setEnabled(audioProcessor.smoothState);
     addAndMakeVisible(smoothButton);
+    buttonAttachments.emplace_back(new AudioProcessorValueTreeState::ButtonAttachment(audioProcessor.state, "smoothState", smoothButton));
     
-    
-    notSmoothButton.addListener(this);
     notSmoothButton.setBounds(625,75,50,50);
     notSmoothButton.setButtonText("No");
-    notSmoothButton.setToggleState(shouldBeOn, dontSendNotification);
-    // notSmoothButton.setState(juce::Button::buttonOver);
     notSmoothButton.setToggleState(audioProcessor.notSmoothState, dontSendNotification);
     notSmoothButton.setRadioGroupId(1);
-    //notSmoothButton.setEnabled(!audioProcessor.smoothState);
     addAndMakeVisible(notSmoothButton);
+    buttonAttachments.emplace_back(new AudioProcessorValueTreeState::ButtonAttachment(audioProcessor.state, "notSmoothState", notSmoothButton));
     
 
-    startTimerHz(30);
-    
-    
-    
-//    mutateButton.addListener(this);
-//    mutateButton.setBounds(460,125,100,40);
-//    mutateButton.setButtonText("Mutate");
-//    mutateButton.setToggleState(audioProcessor.mutateState, dontSendNotification);
-//    mutateButton.setRadioGroupId(1);
-//    addAndMakeVisible(mutateButton);
-    
-//    notMutateButton.addListener(this);
-//    notMutateButton.setBounds(460,125,100,40);
-//    notMutateButton.setButtonText("Mutate off");
-//    notMutateButton.setToggleState(audioProcessor.mutateState, dontSendNotification);
-//    notMutateButton.setRadioGroupId(1);
-//    addAndMakeVisible(notMutateButton);
-    
-//    mutateButton.setEnabled(audioProcessor.mutateState);
-//    notMutateButton.setEnabled(!audioProcessor.mutateState);
-    
-    varianceSlider.addListener(this);
+    // Sliders
     varianceSlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     varianceSlider.setBounds(195,180,100,100);
     varianceSlider.setRange(1, 8, 4);
-    varianceSlider.setValue(audioProcessor.grainSize);
     varianceSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 75,25);
     addAndMakeVisible(varianceSlider);
+    sliderAttachments.emplace_back(new AudioProcessorValueTreeState::SliderAttachment(audioProcessor.state, "varianceValue", varianceSlider));
     
-    wetDrySlider.addListener(this);
     wetDrySlider.setRange(0, 1, 0.01);
     wetDrySlider.setBounds(65,180,100,100);
-    wetDrySlider.setValue(audioProcessor.mixPercent);
     wetDrySlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     wetDrySlider.setTextBoxStyle(Slider::TextBoxBelow, false, 75, 25);
     addAndMakeVisible(wetDrySlider);
+    sliderAttachments.emplace_back(new AudioProcessorValueTreeState::SliderAttachment(audioProcessor.state,"wetDryValue",wetDrySlider));
+    
+    gainSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
+    gainSlider.setRange(0.01f, 1.5f, 0.01f);
+    gainSlider.setBounds(615,185,50,135);
+    gainSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 45,45);
+    addAndMakeVisible(gainSlider);
+    sliderAttachments.emplace_back(new AudioProcessorValueTreeState::SliderAttachment(audioProcessor.state, "makeupGainValue", gainSlider));
+    
+    //Timer
+    startTimerHz(30);
     
 
 }
@@ -273,30 +223,30 @@ void GranularTextureSynthesisAudioProcessorEditor::resized()
 
 void GranularTextureSynthesisAudioProcessorEditor::sliderValueChanged(Slider * slider){
     
-    if (slider == &wetDrySlider){
-        audioProcessor.mixPercent = wetDrySlider.getValue();
-    }
-    if (slider == &gainSlider){
-        audioProcessor.gain = gainSlider.getValue();
-    }
-    if (slider == &varianceSlider){
-        audioProcessor.variance = varianceSlider.getValue();
-    }
+//    if (slider == &wetDrySlider){
+//        audioProcessor.wetDryValue = wetDrySlider.getValue();
+//    }
+//    if (slider == &gainSlider){
+//        audioProcessor.gain = gainSlider.getValue();
+//    }
+//    if (slider == &varianceSlider){
+//        audioProcessor.variance = varianceSlider.getValue();
+//    }
 }
 
 void GranularTextureSynthesisAudioProcessorEditor::comboBoxChanged(ComboBox * comboBox){
     if(comboBox == &algSelector){
         if(algSelector.getSelectedId() == 1){
             // Asynchronous
-            audioProcessor.algorithm = 1.f;
+            audioProcessor.algorithm = 1;
         }
         if(algSelector.getSelectedId() == 2){
             // Asynchronous
-            audioProcessor.algorithm = 2.f;
+            audioProcessor.algorithm = 2;
         }
         if(algSelector.getSelectedId() == 3){
             // Asynchronous
-            audioProcessor.algorithm =3.f;
+            audioProcessor.algorithm =3;
         }
     if(comboBox == &grainSizeSelector)
         if(grainSizeSelector.getSelectedId() == 1){
@@ -360,20 +310,12 @@ void GranularTextureSynthesisAudioProcessorEditor::timerCallback(){
 
 void GranularTextureSynthesisAudioProcessorEditor::buttonClicked(Button * button){
     // if clicked, do something
-    if (button == &mutateButton){
-        audioProcessor.mutateState = false;
-    }
-    if (button == &notMutateButton){
-        audioProcessor.mutateState = true;
-    }
     if (button == &smoothButton){
         audioProcessor.smoothState = true;
-        //smoothButton.setEnabled(true);
-        //notSmoothButton.setEnabled(false);
+
     }
     if (button == &notSmoothButton){
         audioProcessor.smoothState = false;
-        //smoothButton.setEnabled(false);
-        //notSmoothButton.setEnabled(true);
+
     }
 }

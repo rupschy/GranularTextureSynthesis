@@ -44,7 +44,7 @@ public:
     // Button for randomizing permutations
     void buttonClicked(Button * button) override;
     
-    bool shouldBeOn = true;
+
 
 
 private:
@@ -73,33 +73,34 @@ private:
     
     void timerCallback() override;
     
-    //Toggle Button for smoothing filtering
-    ToggleButton smoothButton;
-    ToggleButton notSmoothButton;
-    
-    // Grain size slider
-    Slider grainSizeSlider;
-    
-    // Gain slider
-    Slider gainSlider;
-    
-    Slider wetDrySlider;
-    
-    // Drop-down for algorithm type
-    ComboBox algSelector;
-    // Once inheriting behavior like comboBox, can be used anywhere in class now
-    ComboBox grainSizeSelector;
-    ComboBox overlapSelector;
-    
-    
-    ToggleButton mutateButton;
-    ToggleButton notMutateButton;
-    
-    // Variance Slider
-    Slider varianceSlider;
+
     
     
 
+    Slider varianceSlider;
+    Slider gainSlider;
+    Slider wetDrySlider;
+    
+
+    ComboBox algSelector;
+    ComboBox grainSizeSelector;
+    ComboBox overlapSelector;
+    
+    ToggleButton smoothButton;
+    ToggleButton notSmoothButton;
+
+    
+    
+public: // this will get rid of attachment first and then slider
+    
+    
+    //AudioValueTree Info
+    //slider attachments
+    std::vector<std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment>> sliderAttachments;
+    
+    std::vector<std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment>> comboBoxAttachments;
+    
+    std::vector<std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment>> buttonAttachments;
     
 
     

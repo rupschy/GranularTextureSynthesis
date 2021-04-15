@@ -28,20 +28,27 @@ public:
     
     float processMakeupGain(float x,int c) ;
     
-    void setGrainSize(int newGrainSize);
     
-    void setAlgorithm(float newAlgorithm);
+    
     
     void prepare(float newFs);
     
 //    void setPermutation(float newPermutation);
     
-    void setGainValue(float newGain);
+    // All sliders
+    void setMakeupGainValue(float newGain);
+    void setWetDryValue(float newWetDryValue);
+    void setVarianceValue(int newVariance);
+    // All ComboBoxes
+    void setAlgorithm(int newAlgorithm);
+    void setGrainSize(int newGrainSize);
+    void setOverlap(float newOverlap);
     
+    void setSmoothState(bool newSmoothState);
     float setSmoothFilter(float x, int c);
     float mAverage(float x, int channel);
     
-//    void setVarianceValue(int newVariance);
+    
     
     
 //    void splitBuffer(float * leftChannel, float * rightChannel, const int N);
@@ -94,16 +101,20 @@ public:
 
 private:
 
+    
+    
+    // Sliders
+    int varianceValue = 1;
+    float makeupGainValue = 1.f;
+    float wetDryValue = 0.5f;
+
+    // ComboBoxes
+    int algorithm = 1; // 1 = Asynchronous 2 = Synchronous 3 = Smart
     int grainSize = 1024; // choices: 64 128 256 512 1024 2048 4096 8192
+    float overlap = 0.f; // 0, 0.25, 0.5, 0.75
     
-    float algorithm = 1.f; // 1 = Asynchronous 2 = Synchronous 3 = Smart
-    int grainSizeChoice = 5; //initialized at 1024 samples per grain
-    
-    float permutation = {0.f};
-    
-    float gain = 1.f;
-    
-    int variance = 0;
+    // Buttons
+    bool smoothState = false;
     
     // array for reading in buffers from DAW
 //    static const int arraySize = 262144;

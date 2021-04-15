@@ -22,7 +22,7 @@ GranularTextureSynthesisAudioProcessor::GranularTextureSynthesisAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ), state(*this, nullptr, "grainSizeChoice", createParameterLayout())
+                       ), state(*this, nullptr, "GranulateParams", createParameterLayout())
 #endif
 {
     
@@ -32,14 +32,23 @@ GranularTextureSynthesisAudioProcessor::~GranularTextureSynthesisAudioProcessor(
 {
 }
 
-//NEEDS TO CHANGE
-// AUDIO PROCESSOR VALUE TREE STATE
-AudioProcessorValueTreeState::ParameterLayout GranularTextureSynthesisAudioProcessor::createParameterLayout(){
+AudioProcessorValueTreeState::ParameterLayout
+    // AUDIO PROCESSOR VALUE TREE STATE
+    GranularTextureSynthesisAudioProcessor::createParameterLayout(){
+        
     // vector of pointers made up of different parameters
     std::vector<std::unique_ptr<RangedAudioParameter>> params;
     // Matches parameters set in Editor.cpp
-    params.push_back(std::make_unique<AudioParameterInt>("grainSizeChoice","Grain Size",1,8,5));
+        params.push_back(std::make_unique<AudioParameterFloat>("wetDryValue","Dry/Wet",0.f,1.f,0.5f));
     // can add additional parameters using params.push_back(std::make_unique<AudioParameterInt> ("param ID","name",0,1,0.5);
+        params.push_back(std::make_unique<AudioParameterInt> ("varianceValue", "Variance Seed", 1,8,4));
+        params.push_back(std::make_unique<AudioParameterFloat> ("makeupGainValue", "Make-up", 0.01f, 1.5f, 1.f));
+        params.push_back(std::make_unique<AudioParameterInt> ("algSelectionValue", "Algorithm Selected", 1,3,1));
+        params.push_back(std::make_unique<AudioParameterInt> ("grainSizeSelectionValue", "Grain Size Selected", 1,8,5));
+        params.push_back(std::make_unique<AudioParameterFloat> ("overlapSelectionValue", "Algorithm Selected", 1, 4, 1));
+        params.push_back(std::make_unique<AudioParameterBool> ("smoothState", "Smoothing Selected", false));
+        params.push_back(std::make_unique<AudioParameterBool> ("notSmoothState", "Not Smoothing Selected", true));
+        
     
     return {params.begin(),params.end()};
     
@@ -166,23 +175,14 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
         buffer.clear (i, 0, buffer.getNumSamples());
      playHead = this->getPlayHead();
 //     playHead->getCurrentPosition(currentPositionInfo);
-    
-//    granulate.setLenIn(buffer.getNumSamples());
-  
-    
-
-    
-//    mutateState = false;
-//    if (mutateState == true){
-//        granulate.setPermutation(permutation);
+    float wetDryValue = *state.getRawParameterValue("wetDryValue");
+    granulate.setWetDryValue(wetDryValue);
+    int varianceValue = *state.getRawParameterValue("varianceValue");
+    granulate.setVarianceValue(varianceValue);
     
     
-//    continuousProc = false;
-        //granulate.setGrainSize(grainSize);
-//    granulate.setPermutationSet(grainSize);
+    //    granulate.setPermutationSet(grainSize);
     //granulate.setVarianceValue(variance);
-    
-    
     granulate.setGrainSize(grainSize);
     granulate.setPermParameters(grainSize);
     granulate.setPermutationSet(grainSize);
@@ -206,7 +206,7 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
 //            }
 
 //          Wet/Dry process
-            float z = (y * mixPercent) + (x * (1-mixPercent));
+            float z = (y * wetDryValue) + (x * (1 - wetDryValue));
             z = buffer.getWritePointer(channel)[n];
             meterValueOutput = vuAnalysisOutput.processSample(z,channel);
 
@@ -236,12 +236,26 @@ void GranularTextureSynthesisAudioProcessor::getStateInformation (juce::MemoryBl
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+    auto currentState = state.copyState();
+    
+    std::unique_ptr<XmlElement> xml (currentState.createXml());
+    copyXmlToBinary(*xml, destData);
+    //dont need to add any additional parameters because all are inside "state"
+    
 }
 
 void GranularTextureSynthesisAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
+    // whose contents will have been created by the getStateInformation()call.
+    
+    //Call-back for parameters
+    std::unique_ptr<XmlElement> xml (getXmlFromBinary(data, sizeInBytes));
+    
+    // looks weird because state is the name of our state...
+    if (xml && xml->hasTagName(state.state.getType())){
+        state.replaceState(ValueTree::fromXml(*xml));
+    }
 }
 
 //==============================================================================

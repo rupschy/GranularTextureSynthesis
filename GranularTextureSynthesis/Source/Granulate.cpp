@@ -25,7 +25,7 @@ Granulate::Granulate(){}
 float Granulate::processMakeupGain(float x, int c){
     
 
-    float y = gain * x;
+    float y = makeupGainValue * x;
     
  
     return y;
@@ -37,30 +37,51 @@ void Granulate::prepare(float newFs){
     
 }
 
+//Sliders
+void Granulate::setVarianceValue(int newVariance){
+    varianceValue = newVariance;
+}
+void Granulate::setMakeupGainValue(float newGain){
+    makeupGainValue = newGain;
+}
+void Granulate::setWetDryValue(float newWetDryValue){
+    wetDryValue = newWetDryValue;
+}
+
+
+// ComboBoxes
+void Granulate::setAlgorithm(int newAlgorithm){
+    algorithm = newAlgorithm;
+}
 void Granulate::setGrainSize(int newGrainSize){
     grainSize = newGrainSize;
 }
-
-void Granulate::setAlgorithm(float newAlgorithm){
-    algorithm = newAlgorithm;
+void Granulate::setOverlap(float newOverlap){
+    overlap = newOverlap;
 }
 
+// Buttons
+void Granulate::setSmoothState(bool newSmoothState){
+    smoothState = newSmoothState;
+}
+
+
+//Permutation needs to be a saved state?
 //void Granulate::setPermutation(float newPermutation){
 //    permutation = newPermutation;
 //}
 
-void Granulate::setGainValue(float newGain){
-    gain = newGain;
-}
+
 
 float Granulate::setSmoothFilter(float x, int c){
     x = x;
     return x;
 }
 
-//void Granulate::setVarianceValue(int newVariance){
-//    variance = newVariance;
-//}
+
+
+
+
 //void Granulate::splitBuffer(float * leftChannel, float * rightChannel,  const int N){
 //    for (int n = 0; n < N; n++){
 //        float L = leftChannel[n];

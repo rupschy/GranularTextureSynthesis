@@ -54,30 +54,34 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
+    int grainSizeSelectionValue = 5;
+    // 1: 64 2: 128 3: 256 4: 512 5: 1024 6: 2048 7: 4096 8: 8192
     int grainSize = 1024;
     
-    float algorithm = 1.f;
-    int grainSizeChoice = 5; // 1: 64 2: 128 3: 256 4: 512 5: 1024 6: 2048 7: 4096 8: 8192
+    int algSelectionValue = 1; //1: async 2:sync 3:smart
+    int algorithm = 1;
+    
+    int overlapSelectionValue = 1;
+//    float overlapPercent = 0.f;
+
     
     //For Simple Meter
     std::atomic<float> meterValueInput;
     std::atomic<float> meterValueOutput;
     
-    bool mutateState = false;
-    
-    float permutation = {0.f};
-    
-    float gain = 1.f;
+
+
+//    float gain = 1.f;
     
     bool smoothState = false;
     
     bool notSmoothState = true;
     
-    int variance = 0;
+//    int variance = 0;
     
     float overlapPercent = 0.f;
     
-    float mixPercent = 0.5f;
+//    float wetDryValue = 0.5f;
     
     
     //AudioProcessorValueTreeState Save/Recall info
