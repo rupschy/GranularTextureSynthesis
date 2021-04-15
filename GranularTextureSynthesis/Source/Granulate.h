@@ -34,7 +34,7 @@ public:
     
     void prepare(float newFs);
     
-    void setPermutation(float newPermutation);
+//    void setPermutation(float newPermutation);
     
     void setGainValue(float newGain);
     

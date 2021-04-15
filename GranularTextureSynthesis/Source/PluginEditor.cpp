@@ -38,10 +38,10 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
 //    smoothingFilterLabel.setJustificationType(Justification::centred);
 //    addAndMakeVisible(smoothingFilterLabel);
 //
-//    gainSliderLabel.setText("Make-up", dontSendNotification);
-//    gainSliderLabel.attachToComponent(&gainSlider,false);
-//    gainSliderLabel.setJustificationType(Justification::centred);
-//    addAndMakeVisible(gainSliderLabel);
+    gainSliderLabel.setText("Make-up", dontSendNotification);
+    gainSliderLabel.attachToComponent(&gainSlider,false);
+    gainSliderLabel.setJustificationType(Justification::centred);
+    addAndMakeVisible(gainSliderLabel);
 
     
     algorithmSelectorLabel.setText("Select Algorithm", dontSendNotification);
@@ -50,10 +50,10 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     addAndMakeVisible(algorithmSelectorLabel);
     
     
-//    grainSizeSelectorLabel.setText("Select Grain Size", dontSendNotification);
-//    grainSizeSelectorLabel.attachToComponent(&grainSizeSelector,false);
-//    grainSizeSelectorLabel.setJustificationType(Justification::centred);
-//    addAndMakeVisible(grainSizeSelectorLabel);
+    grainSizeSelectorLabel.setText("Select Grain Size", dontSendNotification);
+    grainSizeSelectorLabel.attachToComponent(&grainSizeSelector,false);
+    grainSizeSelectorLabel.setJustificationType(Justification::centred);
+    addAndMakeVisible(grainSizeSelectorLabel);
     
     //inputMeterLabel.setFont(6.f);
     inputMeterLabel.setText("In", dontSendNotification);
@@ -71,10 +71,20 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     smoothingFilterLabel.setBounds(520,35,150,25);
     addAndMakeVisible(smoothingFilterLabel);
     
-//    varianceSliderLabel.setText("Variance", dontSendNotification);
-//    varianceSliderLabel.attachToComponent(&varianceSlider,false);
-//    varianceSliderLabel.setJustificationType(Justification::centred);
-//    addAndMakeVisible(varianceSliderLabel);
+    varianceSliderLabel.setText("Variation Seed", dontSendNotification);
+    varianceSliderLabel.attachToComponent(&varianceSlider,false);
+    varianceSliderLabel.setJustificationType(Justification::centred);
+    addAndMakeVisible(varianceSliderLabel);
+    
+    overlapSelectorLabel.setText("Select Overlap Percent", dontSendNotification);
+    overlapSelectorLabel.attachToComponent(&overlapSelector, false);
+    overlapSelectorLabel.setJustificationType(Justification::centred);
+    addAndMakeVisible(overlapSelectorLabel);
+    
+    wetDrySliderLabel.setText("Dry/Wet", dontSendNotification);
+    wetDrySliderLabel.attachToComponent(&wetDrySlider, false);
+    wetDrySliderLabel.setJustificationType(Justification::centred);
+    addAndMakeVisible(wetDrySliderLabel);
     
     
 //    grainSizeSlider.addListener(this);
@@ -95,7 +105,7 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     gainSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
     gainSlider.setValue(audioProcessor.gain);
     gainSlider.setRange(0.01f, 1.5f, 0.01f);
-    gainSlider.setBounds(625,185,50,150);
+    gainSlider.setBounds(615,185,50,135);
     gainSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 45,45);
     addAndMakeVisible(gainSlider);
     
@@ -104,7 +114,7 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     algSelector.addItem("Synchronous",2);
     algSelector.addItem("sMaRt",3);
     algSelector.setSelectedId(1);
-    algSelector.setBounds(340,60,120,40);
+    algSelector.setBounds(350,60,120,40);
     addAndMakeVisible(algSelector);
     
     grainSizeSelector.addListener(this);
@@ -117,10 +127,18 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     grainSizeSelector.addItem("4096",7);
     grainSizeSelector.addItem("8192",8);
     grainSizeSelector.setSelectedId(5);
-    grainSizeSelector.setBounds(340,210,120,40);
+    grainSizeSelector.setBounds(350,160,120,40);
     addAndMakeVisible(grainSizeSelector);
     
-    
+    //Create combobox for overlap % options
+    overlapSelector.addListener(this);
+    overlapSelector.addItem("0%", 1);
+    overlapSelector.addItem("25%",2);
+    overlapSelector.addItem("50%",3);
+    overlapSelector.addItem("75%",4);
+    overlapSelector.setSelectedId(3);
+    overlapSelector.setBounds(350,260,120,40);
+    addAndMakeVisible(overlapSelector);
     
     inputMeter.setBounds(545,185,10,100);
     inputMeter.configuration = SimpleMeter::VERTICAL;
@@ -171,13 +189,21 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
 //    mutateButton.setEnabled(audioProcessor.mutateState);
 //    notMutateButton.setEnabled(!audioProcessor.mutateState);
     
-//    varianceSlider.addListener(this);
-//    varianceSlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-//    varianceSlider.setBounds(180,175,100,100);
-//    varianceSlider.setRange(0, 100, 1);
-//    varianceSlider.setValue(audioProcessor.grainSize);
-//    varianceSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 75,25);
-//    addAndMakeVisible(varianceSlider);
+    varianceSlider.addListener(this);
+    varianceSlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    varianceSlider.setBounds(195,180,100,100);
+    varianceSlider.setRange(1, 8, 4);
+    varianceSlider.setValue(audioProcessor.grainSize);
+    varianceSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 75,25);
+    addAndMakeVisible(varianceSlider);
+    
+    wetDrySlider.addListener(this);
+    wetDrySlider.setRange(0, 1, 0.01);
+    wetDrySlider.setBounds(65,180,100,100);
+    wetDrySlider.setValue(audioProcessor.mixPercent);
+    wetDrySlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    wetDrySlider.setTextBoxStyle(Slider::TextBoxBelow, false, 75, 25);
+    addAndMakeVisible(wetDrySlider);
     
 
 }
@@ -247,15 +273,15 @@ void GranularTextureSynthesisAudioProcessorEditor::resized()
 
 void GranularTextureSynthesisAudioProcessorEditor::sliderValueChanged(Slider * slider){
     
-//    if (slider == &grainSizeSlider){
-//        audioProcessor.grainSize = grainSizeSlider.getValue();
-//    }
+    if (slider == &wetDrySlider){
+        audioProcessor.mixPercent = wetDrySlider.getValue();
+    }
     if (slider == &gainSlider){
         audioProcessor.gain = gainSlider.getValue();
     }
-//    if (slider == &varianceSlider){
-//        audioProcessor.variance = varianceSlider.getValue();
-//    }
+    if (slider == &varianceSlider){
+        audioProcessor.variance = varianceSlider.getValue();
+    }
 }
 
 void GranularTextureSynthesisAudioProcessorEditor::comboBoxChanged(ComboBox * comboBox){
@@ -306,7 +332,24 @@ void GranularTextureSynthesisAudioProcessorEditor::comboBoxChanged(ComboBox * co
             audioProcessor.grainSize = 8192;
         }
     }
-    
+    if(comboBox == &overlapSelector){
+        if(grainSizeSelector.getSelectedId() == 1){
+            // no overlap at all
+            audioProcessor.overlapPercent = 0.f;
+        }
+        if(grainSizeSelector.getSelectedId() == 2){
+            //25% overlap
+            audioProcessor.overlapPercent = 0.25f;
+        }
+        if(grainSizeSelector.getSelectedId() == 3){
+            //50% overlap (default)
+            audioProcessor.overlapPercent = 0.50f;
+        }
+        if(grainSizeSelector.getSelectedId() == 4){
+            //75% overlap
+            audioProcessor.overlapPercent = 0.75f;
+        }
+    }
 }
 
 void GranularTextureSynthesisAudioProcessorEditor::timerCallback(){

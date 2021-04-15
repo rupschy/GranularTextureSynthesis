@@ -75,6 +75,10 @@ public:
     
     int variance = 0;
     
+    float overlapPercent = 0.f;
+    
+    float mixPercent = 0.5f;
+    
     
     //AudioProcessorValueTreeState Save/Recall info
     AudioProcessorValueTreeState state;
@@ -82,6 +86,7 @@ public:
     
     
 private:
+//    float Fs = 48000.f;
     
     Granulate granulate;
     

@@ -45,9 +45,9 @@ void Granulate::setAlgorithm(float newAlgorithm){
     algorithm = newAlgorithm;
 }
 
-void Granulate::setPermutation(float newPermutation){
-    permutation = newPermutation;
-}
+//void Granulate::setPermutation(float newPermutation){
+//    permutation = newPermutation;
+//}
 
 void Granulate::setGainValue(float newGain){
     gain = newGain;
@@ -175,10 +175,6 @@ void Granulate::setPermParameters(int &grainSize){
 }
 
 void Granulate::setPermutationSet(int & grainSize){
-    // Initialize parameters for boolean to augment permutation
-//    int arrayS = 262144;
-//    const static int outArrayS = 2*262144;
-//    float outArray[outArrayS][2] = {0.f};
     int simpleNumInputFrames = floor(inputArrayLength/grainSize);
     int simpleFramesOut = floor(outputArrayLength/grainSize);
     

@@ -113,7 +113,7 @@ void GranularTextureSynthesisAudioProcessor::prepareToPlay (double sampleRate, i
     granulate.prepare(sampleRate);
     vuAnalysisInput.setSampleRate(sampleRate);
     vuAnalysisOutput.setSampleRate(sampleRate);
-    granulate.setGrainSize(grainSize);
+
     
 //    initialize here then afterwards create another
 //    granulate.setPermutationSet(grainSize);
@@ -182,16 +182,21 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
 //    granulate.setPermutationSet(grainSize);
     //granulate.setVarianceValue(variance);
     
+    
+    granulate.setGrainSize(grainSize);
+    granulate.setPermParameters(grainSize);
+    granulate.setPermutationSet(grainSize);
+    granulate.setAlgorithm(algorithm);
+    
     for (int channel = 0; channel < totalNumInputChannels; ++channel){
         for (int n = 0; n < buffer.getNumSamples(); ++n){
             float x = buffer.getReadPointer(channel)[n];
-            float y;
+            float y = buffer.getReadPointer(channel)[n];
             meterValueInput = vuAnalysisInput.processSample(x,channel);
             
-            granulate.setPermParameters(grainSize);
-            granulate.setPermutationSet(grainSize);
-            y = granulate.setInputMatrix(x, channel);
-            y = granulate.outputArray(channel);
+
+//            y = granulate.setInputMatrix(x, channel);
+//            y = granulate.outputArray(channel);
 //            y = granulate.processMakeupGain(y,channel);
 
 //            if (smoothState == true){
@@ -199,9 +204,11 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
 //            }
 //            if (smoothState == false){
 //            }
-//            changed float y to x for test
-            meterValueOutput = vuAnalysisOutput.processSample(y,channel);
-            buffer.getWritePointer(channel)[n] = y;
+
+//          Wet/Dry process
+            float z = (y * mixPercent) + (x * (1-mixPercent));
+            z = buffer.getWritePointer(channel)[n];
+            meterValueOutput = vuAnalysisOutput.processSample(z,channel);
 
 
         }

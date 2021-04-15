@@ -18,7 +18,7 @@ namespace BinaryData
     const int            bg_pngSize = 443232;
 
     extern const char*   bg_1_png;
-    const int            bg_1_pngSize = 379989;
+    const int            bg_1_pngSize = 380080;
 
     extern const char*   airstrike3d_ttf;
     const int            airstrike3d_ttfSize = 62100;
