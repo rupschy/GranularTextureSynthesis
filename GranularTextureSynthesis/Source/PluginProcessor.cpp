@@ -39,8 +39,8 @@ AudioProcessorValueTreeState::ParameterLayout
     // vector of pointers made up of different parameters
     std::vector<std::unique_ptr<RangedAudioParameter>> params;
     // Matches parameters set in Editor.cpp
+        //params.push_back(std::make_unique<AudioParameterInt> ("param ID","name",0,1,0.5);
         params.push_back(std::make_unique<AudioParameterFloat>("wetDryValue","Dry/Wet",0.f,1.f,0.5f));
-    // can add additional parameters using params.push_back(std::make_unique<AudioParameterInt> ("param ID","name",0,1,0.5);
         params.push_back(std::make_unique<AudioParameterInt> ("varianceValue", "Variance Seed", 1,8,4));
         params.push_back(std::make_unique<AudioParameterFloat> ("makeupGainValue", "Make-up", 0.01f, 1.5f, 1.f));
         params.push_back(std::make_unique<AudioParameterInt> ("algSelectionValue", "Algorithm Selected", 1,3,1));
@@ -122,13 +122,6 @@ void GranularTextureSynthesisAudioProcessor::prepareToPlay (double sampleRate, i
     granulate.prepare(sampleRate);
     vuAnalysisInput.setSampleRate(sampleRate);
     vuAnalysisOutput.setSampleRate(sampleRate);
-
-    
-
-    
-    
-    
-
 }
 
 void GranularTextureSynthesisAudioProcessor::releaseResources()

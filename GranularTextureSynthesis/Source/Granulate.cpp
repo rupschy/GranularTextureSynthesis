@@ -29,6 +29,48 @@ void Granulate::prepare(float newFs){
     //Sliders
 void Granulate::setVarianceValue(int newVariance){
     varianceValue = newVariance;
+    
+    if (varianceValue == 1){
+        int sizePerm = sizeof(outputArrayIndex)/sizeof(outputArrayIndex[0]);
+        std::random_shuffle(outputArrayIndex,outputArrayIndex+sizePerm);
+    }
+    if (varianceValue == 2){
+        int sizePerm = sizeof(outputArrayIndex)/sizeof(outputArrayIndex[0]);
+        std::random_shuffle(outputArrayIndex,outputArrayIndex+sizePerm);
+
+    }
+    if (varianceValue == 3){
+        int sizePerm = sizeof(outputArrayIndex)/sizeof(outputArrayIndex[0]);
+        std::random_shuffle(outputArrayIndex,outputArrayIndex+sizePerm);
+
+    }
+    if (varianceValue == 4){
+        int sizePerm = sizeof(outputArrayIndex)/sizeof(outputArrayIndex[0]);
+        std::random_shuffle(outputArrayIndex,outputArrayIndex+sizePerm);
+
+    }
+    if (varianceValue == 5){
+        int sizePerm = sizeof(outputArrayIndex)/sizeof(outputArrayIndex[0]);
+        std::random_shuffle(outputArrayIndex,outputArrayIndex+sizePerm);
+
+    }
+    if (varianceValue == 6){
+        int sizePerm = sizeof(outputArrayIndex)/sizeof(outputArrayIndex[0]);
+        std::random_shuffle(outputArrayIndex,outputArrayIndex+sizePerm);
+
+    }
+    if (varianceValue == 7){
+        int sizePerm = sizeof(outputArrayIndex)/sizeof(outputArrayIndex[0]);
+        std::random_shuffle(outputArrayIndex,outputArrayIndex+sizePerm);
+
+    }
+    if (varianceValue == 8){
+        int sizePerm = sizeof(outputArrayIndex)/sizeof(outputArrayIndex[0]);
+        std::random_shuffle(outputArrayIndex,outputArrayIndex+sizePerm);
+
+    }
+    
+    
 }
 void Granulate::setMakeupGainValue(float newGain){
     makeupGainValue = newGain;
@@ -45,13 +87,14 @@ void Granulate::setGrainSize(int newGrainSize){
 }
 void Granulate::setOverlap(float newOverlap){
     overlap = newOverlap;
+
 }
     // Buttons
 void Granulate::setSmoothState(bool newSmoothState, bool newNotSmoothState){
     smoothState = newSmoothState;
     notSmoothState = newNotSmoothState;
 }
-
+//Smoothing filter not implemented
 float Granulate::setSmoothFilter(float x, int c){
     x = x;
     return x;
@@ -79,7 +122,7 @@ float Granulate::setInputMatrix(float x, int channel){
         // grain is finished, go to next one.
         indexR = 0;
         indexC++;
-        // if a new array is need, initialize array of 1024 and create loop here for single grain creation for freq processing
+        // if a new array is need, initialize array of 1024 and create loop here for single grain creation for freq processing I/e FFT
     }
     if (indexC >= matrixC){
         indexC = 0;
@@ -89,17 +132,7 @@ float Granulate::setInputMatrix(float x, int channel){
     return inputMatrix[indexC][indexR][channel];
 }
 
-
-
 void Granulate::setPermParameters(int &grainSize){
-//    int arrayS = 262144;
-//    const static int outArrayS = 2*262144;
-//    float outArray[outArrayS][2] = {0.f};
-    
-    
-    
-    
-    
     //If Overlap
 //    int gHop = floor(grainSize/2);
 //    float numInputFrames = (float)floor((arrayLength-grainSize+gHop)/gHop);
@@ -161,7 +194,6 @@ void Granulate::setPermutationSet(int & grainSize){
     }
 }
 
-
 float Granulate::outputArray(int channel){
      float x = inputMatrix[indexC][outputArrayIndex[indexR]][channel];
     indexR++;
@@ -174,7 +206,6 @@ float Granulate::outputArray(int channel){
     if (indexC >= matrixC){
         indexC = 0;
     }
-
     return x;
 }
 

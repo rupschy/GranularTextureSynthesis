@@ -112,14 +112,14 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     
     
     //Buttons
-    smoothButton.setBounds(565,75,50,50);
+    smoothButton.setBounds(540,75,50,50);
     smoothButton.setButtonText("Yes");
     smoothButton.setToggleState(audioProcessor.smoothState, dontSendNotification);
     smoothButton.setRadioGroupId(1);
     addAndMakeVisible(smoothButton);
     buttonAttachments.emplace_back(new AudioProcessorValueTreeState::ButtonAttachment(audioProcessor.state, "smoothState", smoothButton));
     
-    notSmoothButton.setBounds(625,75,50,50);
+    notSmoothButton.setBounds(620,75,50,50);
     notSmoothButton.setButtonText("No");
     notSmoothButton.setToggleState(audioProcessor.notSmoothState, dontSendNotification);
     notSmoothButton.setRadioGroupId(1);
