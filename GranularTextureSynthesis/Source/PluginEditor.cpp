@@ -153,6 +153,17 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     startTimerHz(30);
     
 
+    
+    //Font code from Erin!
+//    void RandomPannerAudioProcessorEditor::setFontParameters(Font* font) {
+//        font->setTypefaceName("Avenir Next");
+//        font->setTypefaceStyle("Demi Bold");
+//        font->setHeight(20);
+//    }
+    
+//    setFontParameters(&font);
+    
+//    saturationLabel.setFont(font);
 }
 
 GranularTextureSynthesisAudioProcessorEditor::~GranularTextureSynthesisAudioProcessorEditor()
