@@ -70,12 +70,7 @@ private:
     SimpleMeter inputMeter;
     SimpleMeter outputMeter;
     
-    
     void timerCallback() override;
-    
-
-    
-    
 
     Slider varianceSlider;
     Slider gainSlider;

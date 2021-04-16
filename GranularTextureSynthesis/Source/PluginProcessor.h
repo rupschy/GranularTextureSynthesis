@@ -54,6 +54,7 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
+    // ComboBox values and the variables they change
     int grainSizeSelectionValue = 5;
     // 1: 64 2: 128 3: 256 4: 512 5: 1024 6: 2048 7: 4096 8: 8192
     int grainSize = 1024;
@@ -62,7 +63,7 @@ public:
     int algorithm = 1;
     
     int overlapSelectionValue = 1;
-//    float overlapPercent = 0.f;
+    float overlapPercent = 0.f;
 
     
     //For Simple Meter
@@ -71,17 +72,14 @@ public:
     
 
 
-//    float gain = 1.f;
-    
+//    Button Bools
     bool smoothState = false;
-    
     bool notSmoothState = true;
     
-//    int variance = 0;
+
     
-    float overlapPercent = 0.f;
     
-//    float wetDryValue = 0.5f;
+
     
     
     //AudioProcessorValueTreeState Save/Recall info
@@ -90,8 +88,6 @@ public:
     
     
 private:
-//    float Fs = 48000.f;
-    
     Granulate granulate;
     
     

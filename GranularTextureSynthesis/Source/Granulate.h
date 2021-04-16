@@ -44,7 +44,7 @@ public:
     void setGrainSize(int newGrainSize);
     void setOverlap(float newOverlap);
     
-    void setSmoothState(bool newSmoothState);
+    void setSmoothState(bool newSmoothState, bool newNotSmoothState);
     float setSmoothFilter(float x, int c);
     float mAverage(float x, int channel);
     
@@ -65,28 +65,16 @@ public:
     
     
     // Permutation functions
-    //_______________________________________________________________________________________________________
-    //    sets parameters for use in later functions in/out of class
     void setPermParameters(int &grainSize);
+    void setPermutationSet(int &grainSize);
     
-    void setPermutationSet(int & grainSize);
-    
-    
-    
-    
-    // grainCreation functions
-    //_______________________________________________________________________________________________________
-    // This function should cut original signal into grains, window them, an store in matrix of dimensions [grainSize,numInputFrames]
-//    void createGrains(int & grainSize, int & numInputFrames); // needs grainSize & needs numInputFrames
-    
-//    void setGrainMatrix(float x, int channel, int** matrix, int rows, int cols, int * src, int src_size);
-    
+
     // This function should take each grain and convert into the frequency domain using STFT.h. It should also randomize the frequency bins for each respective grain. Should output multi-dimensional array of [nfft,mfft,numGrains] dimensions
     // This funciton also converts the multi-dimensional arrays back into the time domain and initializes new grain matrix of length [grainSize,numInputFrames]
 //    void setSTFTGrains(float x);
     
     // This function will take in the multi-dimensional time-domain array from setSTFTGrains and create a matrix of dimensions [grainSize, framesOut]. this will call each new grain and change their order from permutation created in setPermutationSet()
-    void arrangeOutputGrains();
+//    void arrangeOutputGrains();
     
     // This function takes the array from arrangeOutputGrains() and will order grains for output per channel
     float outputArray(int channel);
@@ -115,6 +103,7 @@ private:
     
     // Buttons
     bool smoothState = false;
+    bool notSmoothState = true;
     
     // array for reading in buffers from DAW
 //    static const int arraySize = 262144;

@@ -15,29 +15,18 @@ using namespace std;
 
 // Constructor
 Granulate::Granulate(){}
-//void Granulate::processSignal(float *signal, const int numSamples, const int c){
-//    for (int n = 0; n < numSamples; n++){
-//        float x = signal[n]; // get value at memory location
-//        x = processSample(x,c);
-//        signal[n] = x;
-//    }
-//}
-float Granulate::processMakeupGain(float x, int c){
-    
 
+// Per-Sample Functions
+float Granulate::processMakeupGain(float x, int c){
     float y = makeupGainValue * x;
-    
- 
     return y;
-    
 }
 
+// Per-Run Functions
 void Granulate::prepare(float newFs){
     Fs = newFs;
-    
 }
-
-//Sliders
+    //Sliders
 void Granulate::setVarianceValue(int newVariance){
     varianceValue = newVariance;
 }
@@ -47,9 +36,7 @@ void Granulate::setMakeupGainValue(float newGain){
 void Granulate::setWetDryValue(float newWetDryValue){
     wetDryValue = newWetDryValue;
 }
-
-
-// ComboBoxes
+    // ComboBoxes
 void Granulate::setAlgorithm(int newAlgorithm){
     algorithm = newAlgorithm;
 }
@@ -59,19 +46,11 @@ void Granulate::setGrainSize(int newGrainSize){
 void Granulate::setOverlap(float newOverlap){
     overlap = newOverlap;
 }
-
-// Buttons
-void Granulate::setSmoothState(bool newSmoothState){
+    // Buttons
+void Granulate::setSmoothState(bool newSmoothState, bool newNotSmoothState){
     smoothState = newSmoothState;
+    notSmoothState = newNotSmoothState;
 }
-
-
-//Permutation needs to be a saved state?
-//void Granulate::setPermutation(float newPermutation){
-//    permutation = newPermutation;
-//}
-
-
 
 float Granulate::setSmoothFilter(float x, int c){
     x = x;
@@ -82,27 +61,6 @@ float Granulate::setSmoothFilter(float x, int c){
 
 
 
-//void Granulate::splitBuffer(float * leftChannel, float * rightChannel,  const int N){
-//    for (int n = 0; n < N; n++){
-//        float L = leftChannel[n];
-//        float R = rightChannel[n];
-//    }
-//}
-//void Granulate::splitBuffer(juce::AudioBuffer<float>& buffer){
-//    float * leftChannel = buffer.getWritePointer(0);
-//    float * rightChannel = buffer.getWritePointer(1);
-//    int N = buffer.getNumSamples();
-//    splitBuffer(leftChannel, rightChannel, N);
-//};
-
-//float Granulate::setFramesOut(float Fs, int grainSize, int N){
-//    int gHop = floor(grainSize/2);
-//    float outLengthS = 2*N;
-//    float outLengthN = outLengthS*Fs;
-//    float framesOut = floor((outLengthN-grainSize+gHop)/gHop);
-//    
-//    return framesOut;
-//}
 
 
 
@@ -114,12 +72,7 @@ float Granulate::setSmoothFilter(float x, int c){
 //        // Any other processing functions with array buffer need to be called here.
 //    }
 //}
-
-
-// Functional to create grains but cant work for windowing and setting overlap
 float Granulate::setInputMatrix(float x, int channel){
-    
-
     inputMatrix[indexC][indexR][channel] = x;
     indexR++;
     if (indexR >= matrixR){
@@ -133,30 +86,11 @@ float Granulate::setInputMatrix(float x, int channel){
         
     }
     //pass input sample into output buffer
-    
-    // how to set up in Pprocessor.cpp? float? need to parse in
     return inputMatrix[indexC][indexR][channel];
-    
-    
 }
 
 
 
-// What steps left?
-// 1. Split audio buffers per channel into grains either by analysis or by grainSize
-// 2. Compute moving average filtering in boolean function in PProcessor.cpp
-// 3. convert grains into frequency domain for further processing
-// 4. Find permutation and calculate number of grains needed???? Maybe not....
-            // Maybe base this off of the entire length of N? that may be based from the DAW though...
-// 5. Do frequency shift from .getSize(). Maybe further frequency processing. This could be where the neural network could process??
-// 6. Convert back to time domain istft etc
-// 7. Get order from permutation matrix for re-implementation into output per channel
-
-
-
-// New Functions in order of operation
-//_______________________________________________________________________________
-//void Granulate::setPermParameters(int grainSize, int arrayLength){
 void Granulate::setPermParameters(int &grainSize){
 //    int arrayS = 262144;
 //    const static int outArrayS = 2*262144;
@@ -166,10 +100,9 @@ void Granulate::setPermParameters(int &grainSize){
     
     
     
-    
+    //If Overlap
 //    int gHop = floor(grainSize/2);
 //    float numInputFrames = (float)floor((arrayLength-grainSize+gHop)/gHop);
-
 //    float outLengthS = 2*(arrayLength/Fs); // Should use Fs not 48000
 //    float outLengthN = outLengthS*Fs; // Should use Fs not 48000
 //    float framesOut = floor((outLengthN-grainSize+gHop/gHop));
@@ -191,8 +124,6 @@ void Granulate::setPermParameters(int &grainSize){
     if (simpleNumInputFrames != matrixR){
         simpleNumInputFrames = floor(inputArrayLength/grainSize);
     }
-
-    
 }
 
 void Granulate::setPermutationSet(int & grainSize){
@@ -209,7 +140,7 @@ void Granulate::setPermutationSet(int & grainSize){
     for (int i = 0; i < simpleFramesOut; i++){
         outputArrayIndex[i] = i;
     }
-//    Randomization of values within the scale from 0 -> outFrames
+//    Randomization of values within the scale from 0 ==> outFrames
     int sizePerm = sizeof(outputArrayIndex)/sizeof(outputArrayIndex[0]);
     std::random_shuffle(outputArrayIndex,outputArrayIndex+sizePerm);
     
@@ -228,21 +159,16 @@ void Granulate::setPermutationSet(int & grainSize){
             outputArrayIndex[j] = outputArrayIndex[j];
         }
     }
-//    return outputArrayIndex[(int)simpleFramesOut];
 }
 
-void Granulate::arrangeOutputGrains(){
-    
-}
 
 float Granulate::outputArray(int channel){
-//    outputArrayF[outIndex][channel]
-     float x = inputMatrix[outputArrayIndex[indexC]][indexR][channel];
+     float x = inputMatrix[indexC][outputArrayIndex[indexR]][channel];
     indexR++;
     outIndex++;
     if (indexR >=matrixR){
+//        if grain is complete, then move to next one...
         indexR = 0;
-        // switch to another grain and output those samples
         indexC++;
     }
     if (indexC >= matrixC){
@@ -253,14 +179,6 @@ float Granulate::outputArray(int channel){
 }
 
 
-//void Granulate::setGrainMatrix(float x, int channel, int** matrix, int rows, int cols, int * src, int src_size){
-//    int pos = 0;
-//    for (int i = 0; i < rows; ++i){
-//        for (int j = 0; j < cols; ++j){
-//            matrix[i][j] = src[pos++];
-//        }
-//    }
-//}
 
 
 
@@ -283,22 +201,21 @@ float Granulate::outputArray(int channel){
 
 
 
-
-
+//Functions unusable for the time being.
 //float* Granulate::hanning(int N, short itype){
-////       HANNING   Hanning window.
-////       HANNING(N) returns the N-point symmetric Hanning window in a column
-////       vector.  Note that the first and last zero-weighted window samples
-////       are not included.
-////
-////       HANNING(N,'symmetric') returns the same result as HANNING(N).
-////
-////       HANNING(N,'periodic') returns the N-point periodic Hanning window,
-////       and includes the first zero-weighted window sample.
-////
-////        itype = 1 --> periodic
-////        itype = 0 --> symmetric
-////        default itype=0 (symmetric)
+//       HANNING   Hanning window.
+//       HANNING(N) returns the N-point symmetric Hanning window in a column
+//       vector.  Note that the first and last zero-weighted window samples
+//       are not included.
+//
+//       HANNING(N,'symmetric') returns the same result as HANNING(N).
+//
+//       HANNING(N,'periodic') returns the N-point periodic Hanning window,
+//       and includes the first zero-weighted window sample.
+//
+//        itype = 1 --> periodic
+//        itype = 0 --> symmetric
+//        default itype=0 (symmetric)
 //        int half, i, idx, n;
 //        float *w;
 //        w = (float*) calloc(N, sizeof(float));
@@ -342,7 +259,7 @@ float Granulate::outputArray(int channel){
 //    int l_size = 16;
 //    float sum = 0.f;
 //    float mAvg = 0.f; // should be an array of values not a global average
-////    maybe use the same calculation from sorted grainMatrix config
+//    maybe use the same calculation from sorted grainMatrix config
 //    for (int i = 0; i <= (size - l_size); i++){
 //        sum = 0;
 //
@@ -353,47 +270,4 @@ float Granulate::outputArray(int channel){
 //        mAvg = sum/l_size;
 //    }
 //    return mAvg;
-//}
-
-
-
-
-
-
-// functional grainCreation code!!!!
-//
-//int arrayS = 32;
-//int* k = 0;
-//int array[32] = {0};
-//
-//for (int n = 0; n < 32; ++n){
-//    array[n] = n;
-//}
-//
-//int sizePerm = sizeof(array)/sizeof(array[0]);
-//std::random_shuffle(array,array+sizePerm);
-////    int size = sizeof(array)/sizeof(array[0]);
-////    std::random_shuffle(array,array+size);
-//
-//int matrixR = 4;
-//int indexR = 0;
-//int matrixC = 8;
-//int indexC = 0;
-//int matrix[8][4] = {0};
-//
-//
-//// FUNCTIONAL
-//for (int k = 0; k < arrayS; ++k){
-//    // no loop, k just turns into x.
-//    matrix[indexC][indexR] = array[k];
-//    indexR++;
-//    if (indexR >= matrixR){
-//        // grain is finished, go to the next column
-//        indexR = 0;
-//        indexC++;
-////             if new array needed, initialize above and create loop for single grain here
-//    }
-//    if (indexC >= matrixC){
-//        indexC = 0;
-//    }
 //}

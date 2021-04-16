@@ -23,8 +23,6 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     }
     addAndMakeVisible(backgroundImageComponent);
     
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
     setSize (700, 350);
     
     // Label classes
@@ -114,7 +112,6 @@ GranularTextureSynthesisAudioProcessorEditor::GranularTextureSynthesisAudioProce
     
     
     //Buttons
-    smoothButton.addListener(this);
     smoothButton.setBounds(565,75,50,50);
     smoothButton.setButtonText("Yes");
     smoothButton.setToggleState(audioProcessor.smoothState, dontSendNotification);
@@ -165,73 +162,14 @@ GranularTextureSynthesisAudioProcessorEditor::~GranularTextureSynthesisAudioProc
 //==============================================================================
 void GranularTextureSynthesisAudioProcessorEditor::paint (juce::Graphics& g)
 {
-
-    
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
-    //g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-    //g.fillAll (juce::Colours::black);
-    //addAndMakeVisible(mImageComponent);
-
-//    g.setColour(juce::Colours::royalblue);
-//    juce::Rectangle<int> areaHeader(1,1,700,75);
-//    g.fillRect(areaHeader);
-    
-    
-//    juce::Rectangle<int> areaRight(350,75,350,275);
-//    g.setColour(juce::Colours::darkblue);
-//    g.fillRect(areaRight);
-//
-//    juce::Rectangle<int> areaLeft(1,75,350,275);
-//    g.setColour(juce::Colours::darkorchid);
-//    g.fillRect(areaLeft);
-
-//    g.setColour(juce::Colours::cornflowerblue);
-//    g.setFont (18.0f);
-    //g.drawFittedText ("| Granular |", getLocalBounds(), juce::Justification::centredLeft, 1);
-//    g.drawText("| Granular |", 100, 75, 125, 25,Justification::centred, 1);
-    
-//    g.setColour(juce::Colours::darkorchid);
-    //g.drawFittedText ("| Texturize |", getLocalBounds(), juce::Justification::centredRight, 1);
-//    g.drawText("| Texturize |", 460, 75, 125, 25,Justification::centred, 1);
-    
-//    g.setColour(juce::Colours::cornflowerblue);
-//    g.setFont(64.f);
-//    g.drawFittedText("Texture Synthesizer", getLocalBounds(), juce::Justification::centredTop, 1);
-//    const juce::Rectangle<float> area (5.f,80.f,90.f,20.f);
-    
-    // 3 Using Point and Path classes
-//    juce::Path path;
-//    path.startNewSubPath(juce::Point<float> (10,10));
-//    path.lineTo(juce::Point<float> (50,10));
-//    path.lineTo(juce::Point<float> (50,50));
-//    path.lineTo(juce::Point<float> (10,50));
-//    g.fillPath(path);
 }
 
 void GranularTextureSynthesisAudioProcessorEditor::resized()
 {
-    // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
-    
     backgroundImageComponent.setBounds(1, 1, 700, 350);
-    
-        //juce::Rectangle<int> areaHeader(1,1,700,75);
-    //const juce::Rectangle<float> area (5.f,80.f,90.f,20.f);
-    
-    
 }
 
 void GranularTextureSynthesisAudioProcessorEditor::sliderValueChanged(Slider * slider){
-    
-//    if (slider == &wetDrySlider){
-//        audioProcessor.wetDryValue = wetDrySlider.getValue();
-//    }
-//    if (slider == &gainSlider){
-//        audioProcessor.gain = gainSlider.getValue();
-//    }
-//    if (slider == &varianceSlider){
-//        audioProcessor.variance = varianceSlider.getValue();
-//    }
 }
 
 void GranularTextureSynthesisAudioProcessorEditor::comboBoxChanged(ComboBox * comboBox){
@@ -254,31 +192,31 @@ void GranularTextureSynthesisAudioProcessorEditor::comboBoxChanged(ComboBox * co
             audioProcessor.grainSize = 64;
         }
         if(grainSizeSelector.getSelectedId() == 2){
-            //64
+            //128
             audioProcessor.grainSize = 128;
         }
         if(grainSizeSelector.getSelectedId() == 3){
-            //64
+            //256
             audioProcessor.grainSize = 256;
         }
         if(grainSizeSelector.getSelectedId() == 4){
-            //64
+            //512
             audioProcessor.grainSize = 512;
         }
         if(grainSizeSelector.getSelectedId() == 5){
-            //64
+            //1024
             audioProcessor.grainSize = 1024;
         }
         if(grainSizeSelector.getSelectedId() == 6){
-            //64
+            //2048
             audioProcessor.grainSize = 2048;
         }
         if(grainSizeSelector.getSelectedId() == 7){
-            //64
+            //4096
             audioProcessor.grainSize = 4096;
         }
         if(grainSizeSelector.getSelectedId() == 8){
-            //64
+            //8192
             audioProcessor.grainSize = 8192;
         }
     }
@@ -312,10 +250,8 @@ void GranularTextureSynthesisAudioProcessorEditor::buttonClicked(Button * button
     // if clicked, do something
     if (button == &smoothButton){
         audioProcessor.smoothState = true;
-
     }
     if (button == &notSmoothButton){
         audioProcessor.smoothState = false;
-
     }
 }

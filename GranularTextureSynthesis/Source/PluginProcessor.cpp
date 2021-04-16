@@ -124,12 +124,11 @@ void GranularTextureSynthesisAudioProcessor::prepareToPlay (double sampleRate, i
     vuAnalysisOutput.setSampleRate(sampleRate);
 
     
-//    initialize here then afterwards create another
-//    granulate.setPermutationSet(grainSize);
+
     
     
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    
+
 }
 
 void GranularTextureSynthesisAudioProcessor::releaseResources()
@@ -179,14 +178,26 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
     granulate.setWetDryValue(wetDryValue);
     int varianceValue = *state.getRawParameterValue("varianceValue");
     granulate.setVarianceValue(varianceValue);
+    float makeupGainValue  = *state.getRawParameterValue("makeupGainValue");
+    granulate.setMakeupGainValue(makeupGainValue);
+    
+    // ComboBox value setting
+    int algSelectionValue = *state.getRawParameterValue("algSelectionValue");
+    granulate.setAlgorithm(algSelectionValue);
+    float overlapSelectionValue = *state.getRawParameterValue("overlapSelectionValue");
+    granulate.setOverlap(overlapSelectionValue);
+    int grainSizeSelectionValue = *state.getRawParameterValue("grainSizeSelectionValue");
+    granulate.setGrainSize(grainSizeSelectionValue);
+    
+    // Button value setting
+    bool smoothState = *state.getRawParameterValue("smoothState");
+    bool notSmoothState = *state.getRawParameterValue("notSmoothState");
+    granulate.setSmoothState(smoothState,notSmoothState);
     
     
-    //    granulate.setPermutationSet(grainSize);
-    //granulate.setVarianceValue(variance);
-    granulate.setGrainSize(grainSize);
     granulate.setPermParameters(grainSize);
     granulate.setPermutationSet(grainSize);
-    granulate.setAlgorithm(algorithm);
+    
     
     for (int channel = 0; channel < totalNumInputChannels; ++channel){
         for (int n = 0; n < buffer.getNumSamples(); ++n){
@@ -195,27 +206,19 @@ void GranularTextureSynthesisAudioProcessor::processBlock (juce::AudioBuffer<flo
             meterValueInput = vuAnalysisInput.processSample(x,channel);
             
 
-//            y = granulate.setInputMatrix(x, channel);
-//            y = granulate.outputArray(channel);
-//            y = granulate.processMakeupGain(y,channel);
+            y = granulate.setInputMatrix(x, channel);
+            y = granulate.outputArray(channel);
+            y = granulate.processMakeupGain(y,channel);
 
-//            if (smoothState == true){
-//                granulate.setSmoothFilter(x,channel);
-//            }
-//            if (smoothState == false){
-//            }
+            if (smoothState == true){
+                granulate.setSmoothFilter(y,channel);
+            }
 
 //          Wet/Dry process
             float z = (y * wetDryValue) + (x * (1 - wetDryValue));
-            z = buffer.getWritePointer(channel)[n];
             meterValueOutput = vuAnalysisOutput.processSample(z,channel);
-
-
+            z = buffer.getWritePointer(channel)[n];
         }
-        
-
-//        float * channelData = buffer.getWritePointer(channel);
-//        granulate.processSignal(channelData, buffer.getNumSamples(), channel);
     }
 }
 
